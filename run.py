@@ -14,8 +14,7 @@ import preprocess
 
 
 """
-Timing decorator to track how long a function takes
-@timeit
+Timing decorator to monitor a function's duration
 """
 def timeit(f):
 
@@ -33,10 +32,12 @@ def timeit(f):
 @timeit
 def main():
 	count = 0
+
 	filename_2015_mini = './gg15mini.json'
-	filename_2015 = './goldenglobes2015.json'
-	filename_2013 = './gg2013.json'
+	filename_2015      = './goldenglobes2015.json'
+	filename_2013      = './gg2013.json'
 	wordset = preprocess.create_preprocess_wordset()
+	
 	with open(filename_2013, 'r') as f:
 		for line in f:
 			loaded = json.loads(line)
