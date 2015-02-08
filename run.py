@@ -11,6 +11,8 @@ import nltk
 from nltk import word_tokenize
 import json
 import preprocess
+
+
 """
 Timing decorator to track how long a function takes
 @timeit
@@ -18,13 +20,11 @@ Timing decorator to track how long a function takes
 def timeit(f):
 
     def timed(*args, **kw):
+        start     = time.time()
+        result    = f(*args, **kw)
+        end       = time.time()
 
-        ts = time.time()
-        result = f(*args, **kw)
-        te = time.time()
-
-        print 'func:%r took: %2.4f sec' % \
-          (f.__name__, te-ts)
+        print 'func:%r took: %2.4f sec' % (f.__name__, end-start)
         return result
 
     return timed
