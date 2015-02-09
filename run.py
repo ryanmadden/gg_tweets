@@ -33,13 +33,19 @@ class Award(object):
 		self.presenters[p] += 1
 
 	def show(self):
-		print "Award: " + self.title
 		winner =  dict(sorted(self.nominees.iteritems(), key=operator.itemgetter(1), reverse=True)[:1])
-		print winner.keys()[0].title()
+		presenters = dict(sorted(self.presenters.iteritems(), key=operator.itemgetter(1), reverse=True)[:2])
+		print "----"
+		print "   Award: " + self.title
+		print "   Winner: " + winner.keys()[0].title()
+		print "   Presented by: " + presenters.keys()[0].title() + " & " + presenters.keys()[1].title()
 
 
 
 def find_names(tweet):
+	tweet.replace("golden", "")
+	tweet.replace("globe", "")
+	tweet.replace("globes", "")
 	return re.findall("([A-Z][-'a-zA-Z]+\s[A-Z][-'a-zA-Z]+)", tweet)
 
 
