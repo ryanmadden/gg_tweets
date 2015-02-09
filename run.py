@@ -57,6 +57,7 @@ def main():
 	f_2015_mini = './gg15mini.json'
 	f_2015      = './goldenglobes2015.json'
 	f_2013      = './gg2013.json'
+	f_grant     = '/home/grant/Desktop/golden_globe/goldenglobes2015.json'
 
 	host_filters      = ["host", "hosting", "hosts", "hosted"]
 	presenter_filters = ["presented", "presenting", "presenter", "presenters"]
@@ -111,10 +112,13 @@ def main():
 	potential_presenters = {}
 	potential_nominees   = {}
 
-	with open(f_2015_mini, 'r') as f:
-		tweets = map(json.loads, f)[0]
-
-		for tweet in tweets:
+	count = 0
+	with open(f_grant, 'r') as f:
+		for line in f:
+			count +=1
+			if count > 1000000:
+				break
+			tweet = json.loads(line)
 			text  = tweet['text']
 			names = ""
 
