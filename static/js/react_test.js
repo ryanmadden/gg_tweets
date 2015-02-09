@@ -1,19 +1,19 @@
 var Data = React.createClass({
   render: function() {
 
-  	//Make a pythonesque zip function 
-  	//turns [[0,1,2],[10,11,12]] ===> [[0,10], [1,11], [2,12]]
-  	function zip(arrays) {
-	    return arrays[0].map(function(_,i){
-	        return arrays.map(function(array){return array[i]})
-	    });
-	}
+    if(this.props['hosts']){
+      datalist = this.props.hosts.map(function(host){
+        return (
+          <li> {host} </li>
+        );
+      });
+    }
 
-  	countlist = zip([this.props.text[0], this.props.text[1]]).map(function(kv){
-  		return (
-  			<li>{kv[0]}     {kv[1]}</li>
-  		);
-  	});
+    if(this.props['award']){
+      console.log(this.props.award);
+      console.log(this.props.winner);
+      datalist = <li>{this.props.winner}</li>
+    }
 
     return (
       <div className="data">
@@ -21,7 +21,7 @@ var Data = React.createClass({
           {this.props.award}
         </h2>
         <ol>
-        	{countlist}
+        	{datalist}
         </ol>
       </div>
     );
@@ -31,9 +31,28 @@ var Data = React.createClass({
 var DataList = React.createClass({
   render: function() {
   	var data_nodes = this.props.data.map(function(data){
+      if(data['award']){
+        return (
+          <Data award={data.award} winner={data.winner}>
+            {data.winner}
+         </Data>
+       );
+      }
+      else if (data['hosts']){
+        return (
+        <Data hosts={data.hosts}>
+          {data.hosts}
+        </Data>
+        );
+      }
+
   		return (
-  			<Data award={data.award} text={data.text}>
-  				{data.text}
+  			<Data hosts={data.hosts} award={data.award} winner={data.winner}>
+          {data.hosts}
+          {data.award}
+  				{data.winner}
+          }
+        }
   			</Data>
   		);
   	});
@@ -68,7 +87,7 @@ var DataBox = React.createClass({
   render: function() {
     return (
       <div className="DataBox">
-        <h1>Awards</h1>
+        <h1>Hosts</h1>
         <DataList data={this.state.data} />
       </div>
     );

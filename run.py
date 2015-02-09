@@ -3,6 +3,7 @@ import operator
 import re
 from nltk import word_tokenize
 from timer import timeit
+from pprint import pprint
 
 
 
@@ -37,6 +38,10 @@ class Award(object):
 		winner =  dict(sorted(self.nominees.iteritems(), key=operator.itemgetter(1), reverse=True)[:1])
 		print winner.keys()[0].title()
 
+	def show_api(self):
+		winner =  dict(sorted(self.nominees.iteritems(), key=operator.itemgetter(1), reverse=True)[:1])
+		return {"award" : self.title, "winner" : winner.keys()[0].title()}
+
 
 
 def find_names(tweet):
@@ -50,6 +55,13 @@ def determine_results(awards, hosts):
 	print ""
 	for award in awards:
 		award.show()
+
+def hosts_api(hosts):
+	hosts = dict(sorted(hosts.iteritems(), key=operator.itemgetter(1), reverse=True)[:2])
+	return [{'hosts': hosts.keys()}]
+
+def awards_api(awards):
+	return [award.show_api() for award in awards]
 
 
 @timeit
@@ -116,7 +128,7 @@ def main():
 	with open(f_grant, 'r') as f:
 		for line in f:
 			count +=1
-			if count > 1000000:
+			if count > 10000:
 				break
 			tweet = json.loads(line)
 			text  = tweet['text']
@@ -150,7 +162,11 @@ def main():
 									award.add_presenter(n.lower())
 
 	determine_results(awards, potential_hosts)
+	
+	final_awards = awards_api(awards)
+	final_hosts  = hosts_api(potential_hosts)
 
+	return (final_hosts, final_awards)
 
 
 
