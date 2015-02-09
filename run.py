@@ -34,8 +34,8 @@ class Award(object):
 
 	def show(self):
 		print "Award: " + self.title
-		print dict(sorted(self.nominees.iteritems(), key=operator.itemgetter(1), reverse=True)[:1])
-
+		winner =  dict(sorted(self.nominees.iteritems(), key=operator.itemgetter(1), reverse=True)[:1])
+		print winner.keys()[0].title()
 
 
 
@@ -83,7 +83,7 @@ def main():
 						 ["j. k. simmons", "robert duvall", "ethan hawke", "edward norton", "mark ruffalo"],
 						 ["patricia arquette", "jessica chastain", "keira knightley", "emma stone", "meryl streep"],
 						 ["richard linklater", "wes anderson", "ava duvernay", "david fincher", "alejandro gonzalez inarritu"],
-						 ["alejandro gonzalez inarritu", "wes anderson", "gillian flynn", "richard linklater", "graham moore"],
+						 ["birdman", "wes anderson", "gillian flynn", "richard linklater", "graham moore"],
 						 ["johann johannsson", "alexandre desplat", "trent reznor and atticus ross", "antonio sanchez", "hanz zimmer"],
 						 ["glory", "big eyes", "mercy is", "opportunity", "yellow flicker beat"],
 						 ["how to train your dragon 2", "big hero 6", "the book of life", "the boxtrolls", "the lego movie"],
@@ -131,12 +131,9 @@ def main():
 			for award in awards:
 				for filt in award.get_filters():
 					if filt in text:
-						if not names:
-							names = find_names(text)
-						for n in names:
-							if n.lower() in award.get_nominees():
-								award.increment_nominee(n.lower())
-
+						for t in award.get_nominees():
+							if t in text.lower():
+								award.increment_nominee(t)
 					for filt in presenter_filters:
 						if filt in text:
 							if not names:
