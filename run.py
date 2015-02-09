@@ -38,7 +38,7 @@ class Award(object):
 		winner =  dict(sorted(self.nominees.iteritems(), key=operator.itemgetter(1), reverse=True)[:1])
 		presenters = dict(sorted(self.presenters.iteritems(), key=operator.itemgetter(1), reverse=True)[:3])
 		print "-- Award: " + self.title
-		print "     Presented by: " + str(presenters.keys()[0]).title() + " & " + str(presenters.keys()[1]).title() + " & " + str(presenters.keys()[2]).title()
+		print "     Presented by: " + str(presenters.keys()[0]).title() + " & " + str(presenters.keys()[1]).title()
 		print "     Winner: " + winner.keys()[0].title()
 
 	def show_api(self):
@@ -144,12 +144,13 @@ def main():
 	potential_nominees   = {}
 
 	count = 0
-	with open(f_2015_mini, 'r') as f:
-		for line in f:
-			count +=1
-			if count > 10000:
-				break
-			tweet = json.loads(line)[0]
+	curr_percent = -5
+ 	with open(f_2015_mini, 'r') as f:
+ 		tweets = map(json.loads, f)[0]
+		print "Tweet collection created..."
+		num_tweets = len(tweets)
+
+		for tweet in tweets:
 			text  = tweet['text']
 			names = ""
 			presenter_names = ""
@@ -181,12 +182,12 @@ def main():
 								else:
 									award.add_presenter(pn.lower())
 
-			# percent = (float(count)/num_tweets) * 100
-			# if percent > curr_percent:
-			# 	curr_percent += 5
-			# 	sys.stdout.write("\r{0}".format(str(curr_percent) + "% complete"))
-			# 	sys.stdout.flush()
-			# count+=1
+			percent = (float(count)/num_tweets) * 100
+			if percent > curr_percent:
+				curr_percent += 5
+				sys.stdout.write("\r{0}".format(str(curr_percent) + "% complete"))
+				sys.stdout.flush()
+			count+=1
 
 	determine_results(awards, potential_hosts)
 	
