@@ -1,28 +1,58 @@
 var Data = React.createClass({
   render: function() {
-
+    datalist = null 
+    nominees = null
+    presenters = null 
     if(this.props['hosts']){
       datalist = this.props.hosts.map(function(host){
         return (
           <li> {host} </li>
         );
       });
+      return (
+        <div className="data">
+          <h2 className="dataaward"></h2>
+          {datalist}
+        </div>
+      );
     }
 
     if(this.props['award']){
-      console.log(this.props.award);
-      console.log(this.props.winner);
       datalist = <li>{this.props.winner}</li>
+      nominees = this.props.nominees.map(function(nominee){
+        return(
+          <li> {nominee} </li>
+          );
+      });
+      presenters = this.props.presenters.map(function(presenter){
+        return(
+          <li> {presenter} </li>
+          );
+      });
+      return (
+        <div className="data">
+          <h2 className="dataaward">
+            {this.props.award}
+          </h2>
+          <ul>
+            <h3 className="awardcategory">Winner</h3>
+            {datalist}
+          </ul>
+          <ul>
+            <h3 className="awardcategory">Nominees</h3>
+            {nominees}
+          </ul>
+          <ul>
+            <h3 className="awardcategory">Presenters</h3>
+            {presenters}
+          </ul>
+        </div>
+      );
     }
 
     return (
       <div className="data">
-        <h2 className="dataaward">
-          {this.props.award}
-        </h2>
-        <ol>
-        	{datalist}
-        </ol>
+        <h2 className="dataaward"></h2>
       </div>
     );
   }
@@ -33,16 +63,19 @@ var DataList = React.createClass({
   	var data_nodes = this.props.data.map(function(data){
       if(data['award']){
         return (
-          <Data award={data.award} winner={data.winner}>
+          <Data award={data.award} winner={data.winner} nominees={data.nominees} presenters={data.presenters}>
             {data.winner}
          </Data>
        );
       }
       else if (data['hosts']){
         return (
-        <Data hosts={data.hosts}>
-          {data.hosts}
-        </Data>
+        <div>
+          <h1>Hosts</h1>
+          <Data hosts={data.hosts}>
+            {data.hosts}
+          </Data>
+        </div>
         );
       }
 
@@ -87,7 +120,6 @@ var DataBox = React.createClass({
   render: function() {
     return (
       <div className="DataBox">
-        <h1>Hosts</h1>
         <DataList data={this.state.data} />
       </div>
     );
