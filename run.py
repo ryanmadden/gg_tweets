@@ -1,6 +1,7 @@
 import json
 import operator
 import re
+import sys
 from nltk import word_tokenize
 from timer import timeit
 from pprint import pprint
@@ -34,9 +35,11 @@ class Award(object):
 		self.presenters[p] += 1
 
 	def show(self):
-		print "Award: " + self.title
 		winner =  dict(sorted(self.nominees.iteritems(), key=operator.itemgetter(1), reverse=True)[:1])
-		print winner.keys()[0].title()
+		presenters = dict(sorted(self.presenters.iteritems(), key=operator.itemgetter(1), reverse=True)[:3])
+		print "-- Award: " + self.title
+		print "     Presented by: " + str(presenters.keys()[0]).title() + " & " + str(presenters.keys()[1]).title() + " & " + str(presenters.keys()[2]).title()
+		print "     Winner: " + winner.keys()[0].title()
 
 	def show_api(self):
 		winner =  dict(sorted(self.nominees.iteritems(), key=operator.itemgetter(1), reverse=True)[:1])
@@ -49,9 +52,27 @@ def find_names(tweet):
 
 
 
+def find_presenter_names(tweet):
+	tweet = tweet.replace("golden", "")
+	tweet = tweet.replace("globe", "")
+	tweet = tweet.replace("globes", "")
+	tweet = tweet.replace("Golden", "")
+	tweet = tweet.replace("Globe", "")
+	tweet = tweet.replace("Globes", "")
+	propers = re.findall("([A-Z][a-z]{1,2}\.\s+(?:[A-Z][a-z]+\s*)*|(?<!\. )(?<!;)(?:[A-Z][a-z]+\s*)+)", tweet)
+	for x in range(len(propers)):
+		propers[x] = propers[x].strip()
+	for proper in propers:
+		if len(proper) < 3:
+			propers.remove(proper)
+	return propers
+
+
+
 def determine_results(awards, hosts):
 	hosts = dict(sorted(hosts.iteritems(), key=operator.itemgetter(1), reverse=True)[:2])
-	print hosts
+	print "\n\nOutcome of the 2015 Golden Globes"
+	print "  Hosted by: " + str(hosts.keys()[0]).title() + " & " + str(hosts.keys()[1]).title()
 	print ""
 	for award in awards:
 		award.show()
@@ -69,7 +90,6 @@ def main():
 	f_2015_mini = './gg15mini.json'
 	f_2015      = './goldenglobes2015.json'
 	f_2013      = './gg2013.json'
-	f_grant     = '/home/grant/Desktop/golden_globe/goldenglobes2015.json'
 
 	host_filters      = ["host", "hosting", "hosts", "hosted"]
 	presenter_filters = ["presented", "presenting", "presenter", "presenters"]
@@ -119,20 +139,20 @@ def main():
 	awards = [Award(award_titles[x], award_filters[x], nominees[x]) for x in range(14)]
 	print "Awards created..."
 
-
 	potential_hosts      = {}
 	potential_presenters = {}
 	potential_nominees   = {}
 
 	count = 0
-	with open(f_grant, 'r') as f:
+	with open(f_2015_mini, 'r') as f:
 		for line in f:
 			count +=1
 			if count > 10000:
 				break
-			tweet = json.loads(line)
+			tweet = json.loads(line)[0]
 			text  = tweet['text']
 			names = ""
+			presenter_names = ""
 
 			# Filter for hosts
 			for filt in host_filters:
@@ -153,13 +173,20 @@ def main():
 								award.increment_nominee(t)
 					for filt in presenter_filters:
 						if filt in text:
-							if not names:
-								names = find_names(text)
-							for n in names:
-								if n.lower() in award.get_presenters():
-									award.increment_presenter(n.lower())
+							if not presenter_names:
+								presenter_names = find_presenter_names(text)
+							for pn in presenter_names:
+								if pn.lower() in award.get_presenters():
+									award.increment_presenter(pn.lower())
 								else:
-									award.add_presenter(n.lower())
+									award.add_presenter(pn.lower())
+
+			# percent = (float(count)/num_tweets) * 100
+			# if percent > curr_percent:
+			# 	curr_percent += 5
+			# 	sys.stdout.write("\r{0}".format(str(curr_percent) + "% complete"))
+			# 	sys.stdout.flush()
+			# count+=1
 
 	determine_results(awards, potential_hosts)
 	

@@ -5,6 +5,8 @@ def timeit(f):
         start     = time.time()
         result    = f(*args, **kw)
         end       = time.time()
-        print 'func:%r took: %2.4f sec' % (f.__name__, end-start)
+        print "\n__________________________________________"
+        print "Function %r took: %2.4f seconds to execute  |" % (f.__name__, end-start)
+        print "__________________________________________"
         return result
     return timed
