@@ -102,6 +102,7 @@ def main():
 						 "Best Original Song",
 						 "Best Animated Feature Film",
 						 "Best Foreign Language Film"]
+						 
 	awards = [Award(award_titles[x], award_filters[x], nominees[x]) for x in range(14)]
 	print "Awards created..."
 
