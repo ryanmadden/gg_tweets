@@ -38,7 +38,8 @@ class Award(object):
 		winner =  dict(sorted(self.nominees.iteritems(), key=operator.itemgetter(1), reverse=True)[:1])
 		presenters = dict(sorted(self.presenters.iteritems(), key=operator.itemgetter(1), reverse=True)[:3])
 		print "-- Award: " + self.title
-		print "     Presented by: " + str(presenters.keys()[0]).title() + " & " + str(presenters.keys()[1]).title()
+		# print "     Presented by: " + str(presenters.keys()[0]).title() + " & " + str(presenters.keys()[1]).title()
+		print "     Presented by: " + str(sorted(self.presenters.iteritems(), key=operator.itemgetter(1), reverse=True))
 		print "     Winner: " + winner.keys()[0].title()
 
 	def show_api(self):
@@ -59,13 +60,7 @@ def find_presenter_names(tweet):
 	tweet = tweet.replace("Golden", "")
 	tweet = tweet.replace("Globe", "")
 	tweet = tweet.replace("Globes", "")
-	propers = re.findall("([A-Z][a-z]{1,2}\.\s+(?:[A-Z][a-z]+\s*)*|(?<!\. )(?<!;)(?:[A-Z][a-z]+\s*)+)", tweet)
-	for x in range(len(propers)):
-		propers[x] = propers[x].strip()
-	for proper in propers:
-		if len(proper) < 3:
-			propers.remove(proper)
-	return propers
+	return re.findall("([A-Z][-'a-zA-Z]+\s[A-Z][-'a-zA-Z]+)", tweet)
 
 
 
@@ -92,7 +87,7 @@ def main():
 	f_2013      = './gg2013.json'
 
 	host_filters      = ["host", "hosting", "hosts", "hosted"]
-	presenter_filters = ["presented", "presenting", "presenter", "presenters"]
+	presenter_filters = ["presented", "presenting", "presenter"]
 	award_filters     = [["best motion picture", "drama"],
 						 ["best motion picture", "musical", "comedy"],
 						 ["best actor in a motion picture", "drama"],
@@ -172,21 +167,22 @@ def main():
 						for t in award.get_nominees():
 							if t in text.lower():
 								award.increment_nominee(t)
-					for filt in presenter_filters:
-						if filt in text:
-							if not presenter_names:
-								presenter_names = find_presenter_names(text)
-							for pn in presenter_names:
-								if pn.lower() in award.get_presenters():
-									award.increment_presenter(pn.lower())
-								else:
-									award.add_presenter(pn.lower())
+						for filt in presenter_filters:
+							if filt in text:
+								if not presenter_names:
+									presenter_names = find_presenter_names(text)
+								for pn in presenter_names:
+									if pn.lower() in award.get_presenters():
+										award.increment_presenter(pn.lower())
+									else:
+										award.add_presenter(pn.lower())
 
-			percent = (float(count)/num_tweets) * 100
-			if percent > curr_percent:
-				curr_percent += 5
-				sys.stdout.write("\r{0}".format(str(curr_percent) + "% complete"))
-				sys.stdout.flush()
+			if not count % 100:
+				percent = (float(count)/num_tweets) * 100
+				if percent > curr_percent:
+					curr_percent += 5
+					sys.stdout.write("\r{0}".format(str(curr_percent) + "% complete"))
+					sys.stdout.flush()
 			count+=1
 
 	determine_results(awards, potential_hosts)
