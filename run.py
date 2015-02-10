@@ -122,20 +122,34 @@ def main():
 	# Tweet Parsing Filters
 	host_filters      = ["host", "hosting", "hosts", "hosted"]
 	presenter_filters = ["presented", "presenting", "presenter"]
-	award_filters     = [["best motion picture", "drama"],
-						 ["best motion picture", "musical", "comedy"],
-						 ["best actor in a motion picture", "drama"],
-						 ["best actress in a motion picture", "drama"],
-						 ["best actor in a motion picture", "comedy", "musical"],
-						 ["best actress in a motion picture", "comedy", "musical"],
-					     ["best supporting actor in a motion picture", "drama", "musical", "comedy"],
-					     ["best supporting actress in a motion picture", "drama", "musical", "comedy"],
-					     ["best director"],
-					     ["best screenplay"],
-					     ["best original score", "best score"],
-					     ["best original song", "best song"],
-					     ["best animated"],
-					     ["foreign", "language"]]
+	award_filters     = [[["best"], ["picture"], ["drama"]],
+						 [["best"], ["picture"], ["musical", "comedy"]],
+						 [["best"], ["actor"], ["drama"]],
+						 [["best"], ["actress"], ["drama"]],
+						 [["best"], ["actor"], ["musical", "comedy"]],
+						 [["best"], ["actress"], ["musical", "comedy"]],
+						 [["best"], ["supporting"], ["actor"]],
+						 [["best"], ["supporting"], ["actress"]],
+						 [["best"], ["director"]],
+						 [["best"], ["screenplay"]],
+						 [["best"], ["score"]],
+						 [["best"], ["song"]],
+						 [["best"], ["animated"]],
+						 [["best"], ["foreign"]]]
+	# award_filters     = [#["best motion picture", "best picture", "drama"],
+	# 					   #["best motion picture", "musical", "comedy"],
+	# 					   #["best actor in a motion picture", "drama"],
+	# 					   #["best actress in a motion picture", "drama"],
+	# 					   #["best actor in a motion picture", "comedy", "musical"],
+	# 					   #["best actress in a motion picture", "comedy", "musical"],
+	# 				       #["best supporting actor in a motion picture", "drama", "musical", "comedy"],
+	# 				       #["best supporting actress in a motion picture", "drama", "musical", "comedy"],
+	# 				       #["best director"],
+	# 				       #["best screenplay"],
+	# 				       ["best original score", "best score"],
+	# 				       ["best original song", "best song"],
+	# 				       ["best animated"],
+	# 				       ["foreign", "language"]]
 
 	# Hardcoded Info
 	nominees          = [["boyhood", "foxcatcher", "the imitation game", "selma", "the theory of everything"],
@@ -185,7 +199,7 @@ def main():
 			names = ""
 			presenter_names = ""
 
-			# Find hosts
+			# Find hosts (working)
 			for filt in host_filters:
 				if filt in text:
 					names = find_names(text)
@@ -195,11 +209,14 @@ def main():
 						else: 
 							potential_hosts[name] = 1
 
-			# Find nominees and presenters
+			# Find nominees (working) and presenters (not working)
+			# for each award
 			for award in awards:
 				for filt in award.get_filters():
+					# check if tweet contains award name
 					if filt in text:
 						for t in award.get_nominees():
+							# for each nominee that shows up in the tweet, increment its likelihood
 							if t in text.lower():
 								award.increment_nominee(t)
 						for filt in presenter_filters:
