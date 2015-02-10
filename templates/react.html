@@ -5,30 +5,29 @@
   <h1>Menu</h1>
 	<button id="host">Host</button>
 	<button class="awards" id="all">All Awards</button>
-	<button class="awards" id="Best Motion Picture - Drama">Best Motion Picture - Drama</button>
-	<button class="awards" id="Best Motion Picture - Musical_Comedy">Best Motion Picture - Musical/Comedy</button>
-	<button class="awards" id="Best Actor in a Motion Picture - Drama">Best Actor in a Motion Picture - Drama</button>
-	<button class="awards" id="Best Actress in a Motion Picture - Drama">Best Actress in a Motion Picture - Drama</button>
-	<button class="awards" id="Best Actor in a Motion Picture - Musical_Comedy">Best Actor in a Motion Picture - Musical/Comedy</button>
-	<button class="awards" id="Best Actress in a Motion Picture - Musical_Comedy">Best Actress in a Motion Picture - Musical/Comedy</button>
-	<button class="awards" id="Best Supporting Actor in a Motion Picture - Drama_Musical_Comedy">Best Supporting Actor in a Motion Picture - Drama/Musical/Comedy</button>
-	<button class="awards" id="Best Supporting Actress in a Motion Picture - Drama_Musical_Comedy">Best Supporting Actress in a Motion Picture - Drama/Musical/Comedy</button>
-	<button class="awards" id="Best Director">Best Director</button>
-	<button class="awards" id="Best Screenplay">Best Screenplay</button>
-	<button class="awards" id="Best Original Score">Best Original Score</button>
-	<button class="awards" id="Best Original Song">Best Original Song</button>
-	<button class="awards" id="Best Animated Feature Film">Best Animated Feature Film</button>
-	<button class="awards" id="Best Foreign Language Film">Best Foreign Language Film</button>
-	<a href="#" class="button" data-dropdown="drop">Link Dropdown &raquo;</a>
-	<ul id="drop" class="[tiny small medium large content]f-dropdown" data-dropdown-content>
-	  <li><a href="#">This is a link</a></li>
-	  <li><a href="#">This is another</a></li>
-	  <li><a href="#">Yet another</a></li>
+	<div class="row">
+		<button href="#" data-dropdown="drop1" aria-controls="drop1" aria-expanded="false" class="button dropdown small-centered large-centered">Choose an award</button><br>
+		<ul id="drop1" data-dropdown-content class="f-dropdown" aria-hidden="true" tabindex="-1">
+         	<li><a href='#'class="awards" id="Best Motion Picture - Drama">Best Motion Picture - Drama</a></li>
+			<li><a href='#'class="awards" id="Best Motion Picture - Musical_Comedy">Best Motion Picture - Musical_Comedy</a></li>
+			<li><a href='#'class="awards" id="Best Actor in a Motion Picture - Drama">Best Actor in a Motion Picture - Drama</a></li>
+			<li><a href='#'class="awards" id="Best Actress in a Motion Picture - Drama">Best Actress in a Motion Picture - Drama</a></li>
+			<li><a href='#'class="awards" id="Best Actor in a Motion Picture - Musical_Comedy">Best Actor in a Motion Picture - Musical_Comedy</a></li>
+			<li><a href='#'class="awards" id="Best Supporting Actor in a Motion Picture - Drama_Musical_Comedy">Best Supporting Actor in a Motion Picture - Drama_Musical_Comedy</a></li>
+			<li><a href='#'class="awards" id="Best Supporting Actress in a Motion Picture - Drama_Musical_Comedy">Best Supporting Actress in a Motion Picture - Drama_Musical_Comedy</a></li>
+			<li><a href='#'class="awards" id="Best Director">Best Director</a></li>
+			<li><a href='#'class="awards" id="Best Screenplay">Best Screenplay</a></li>
+			<li><a href='#'class="awards" id="Best Original Score">Best Original Score</a></li>
+			<li><a href='#'class="awards" id="Best Animated Feature Film">Best Animated Feature Film</a></li>
+			<li><a href='#'class="awards" id="Best Foreign Language Film">Best Foreign Language Film</a></li>
+		</ul>
+	</div>
+
 	</ul>
 </div>
 
 <div id="main-content" class="large-9 columns">
-  <h1>Golden Tweet NLTK</h1>
+  <h1>Golden Tweet Processing</h1>
   <button class="submit" id="2013">Start processing 2013 data</button>
   <button class="submit" id="2015">Start processing 2015 data</button>
   <div class="load_wrapper">
