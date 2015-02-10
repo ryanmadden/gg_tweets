@@ -17,11 +17,13 @@ var Data = React.createClass({
       );
     }
 
+    console.log('hello')
     if(this.props['award']){
       datalist = <li>{this.props.winner}</li>
+      console.log(this.props.nominees)
       nominees = this.props.nominees.map(function(nominee){
         return(
-          <li> {nominee} </li>
+          <li>{nominee}</li>
           );
       });
       presenters = this.props.presenters.map(function(presenter){
@@ -29,6 +31,7 @@ var Data = React.createClass({
           <li> {presenter} </li>
           );
       });
+
       return (
         <div className="data">
           <h2 className="dataaward">
@@ -38,10 +41,10 @@ var Data = React.createClass({
             <h3 className="awardcategory">Winner</h3>
             {datalist}
           </ul>
-          <ul>
+          <ol>
             <h3 className="awardcategory">Nominees</h3>
             {nominees}
-          </ul>
+          </ol>
           <ul>
             <h3 className="awardcategory">Presenters</h3>
             {presenters}

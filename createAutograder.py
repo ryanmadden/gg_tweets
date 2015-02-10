@@ -31,27 +31,27 @@ def create_unstructured(hosts, awards, nominees):
 	return unstructured
 
 # TODO: add presenters and nominees
-def create_structured_each(each, nominee_dict):
+def create_structured_each(each):
 	award = {}
 	award["winner"] = each["winner"]
-	award["nominees"] = [nominee_dict[each["award"]]]
+	award["nominees"] = each["nominees"]
 	award["presenters"] = []
 	return award
 
-def create_structured(awards, nominee_dict):
+def create_structured(awards):
 	structured = {}
 	for each in awards:
-		structured[each["award"]] = create_structured_each(each, nominee_dict)
+		structured[each["award"]] = create_structured_each(each)
 	return structured
 
 
 def create_data():
-	hosts, awards, nominees, nominee_dict = run.main()
+	hosts, awards, nominees = run.main()
 	print hosts
 	print awards
 	data = {}
 	data["unstructured"] = create_unstructured(hosts, awards, nominees)
-	data["structured"] = create_structured(awards, nominee_dict)
+	data["structured"] = create_structured(awards)
 	return data
 
 def main(year):
