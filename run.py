@@ -44,7 +44,8 @@ class Award(object):
 
 	def show_api(self):
 		winner =  dict(sorted(self.nominees.iteritems(), key=operator.itemgetter(1), reverse=True)[:1])
-		return {"award" : self.title, "winner" : winner.keys()[0].title()}
+		print self.nominees.keys()
+		return {"award" : self.title, "winner" : winner.keys()[0].title(), "nominees" : self.nominees.keys()}
 
 
 
