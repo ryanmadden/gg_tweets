@@ -79,6 +79,22 @@ def hosts_api(hosts):
 def awards_api(awards):
 	return [award.show_api() for award in awards]
 
+def nominees_api(nominees):
+	nominee_compiled = []
+	for mov in nominees:
+		nominee_compiled.extend(mov)
+	return nominee_compiled
+
+def nominees_api_dict(award_titles, nominees):
+	nom_dict = {}
+	for a,n in zip(award_titles, nominees):
+		if a in nom_dict:
+			nom_dict[a].append(n)
+		else:
+			nom_dict[a] = [n]
+	return nom_dict
+
+
 
 @timeit
 def main():
@@ -189,8 +205,10 @@ def main():
 	
 	final_awards = awards_api(awards)
 	final_hosts  = hosts_api(potential_hosts)
+	final_nominees = nominees_api(nominees)
+	final_nominee_dict = nominees_api_dict(award_titles, nominees)
 
-	return (final_hosts, final_awards)
+	return (final_hosts, final_awards, final_nominees, final_nominee_dict)
 
 
 

@@ -16,7 +16,7 @@ def create_meta_data(year):
 	return metadata
 
 # TODO: add presenters and nominees
-def create_unstructured(hosts, awards):
+def create_unstructured(hosts, awards, nominees):
 	unstructured = {}
 	winners = []
 	awards = [] 
@@ -27,30 +27,31 @@ def create_unstructured(hosts, awards):
 		awards.append(each["award"])
 	unstructured["winners"] = winners
 	unstructured["awards"] = awards
+	unstructured["nominees"] = nominees
 	return unstructured
 
 # TODO: add presenters and nominees
-def create_structured_each(each):
+def create_structured_each(each, nominee_dict):
 	award = {}
 	award["winner"] = each["winner"]
-	award["nominees"] = []
+	award["nominees"] = [nominee_dict[each["award"]]]
 	award["presenters"] = []
 	return award
 
-def create_structured(awards):
+def create_structured(awards, nominee_dict):
 	structured = {}
 	for each in awards:
-		structured[each["award"]] = create_structured_each(each)
+		structured[each["award"]] = create_structured_each(each, nominee_dict)
 	return structured
 
 
 def create_data():
-	hosts, awards = run.main()
+	hosts, awards, nominees, nominee_dict = run.main()
 	print hosts
 	print awards
 	data = {}
-	data["unstructured"] = create_unstructured(hosts, awards)
-	data["structured"] = create_structured(awards)
+	data["unstructured"] = create_unstructured(hosts, awards, nominees)
+	data["structured"] = create_structured(awards, nominee_dict)
 	return data
 
 def main(year):

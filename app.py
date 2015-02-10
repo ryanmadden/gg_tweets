@@ -23,7 +23,7 @@ def submit(year):
 
 	with open('autograder.json', 'w') as file:
 		file.truncate()
-		file.write(json.dumps(autograder_json))
+		file.write(json.dumps(autograder_json, indent=4, separators=(',', ': ')))
 	return ""
 
 # create host json in data.json 
@@ -34,13 +34,14 @@ def get_host():
 		hosts = data['data']['unstructured']['hosts']
 		hosts_json = [{"hosts": hosts}]
 	with open('data.json', 'w') as file:
-		file.write(json.dumps(hosts_json))
+		file.write(json.dumps(hosts_json, indent=4, separators=(',', ': ')))
 	return ""
 
 # create award json in data.json 
 @app.route('/awards/<award>', methods=['Post'])
 def get_awards(award):
 	award = award.replace('_','/')
+	#award_json_formated =[]
 	with open('autograder.json', 'r') as file:
 		data = json.loads(file.read())
 		structured = data['data']['structured']
@@ -51,7 +52,7 @@ def get_awards(award):
 		else:
 			award_json_formated = [createJsonFormat(structured,award)]
 	with open('data.json', 'w') as file: 
-		file.write(json.dumps(award_json_formated))
+		file.write(json.dumps(award_json_formated, indent=4, separators=(',', ': ')))
 	return ""
 
 def createJsonFormat(structured, key):

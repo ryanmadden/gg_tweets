@@ -1,4 +1,5 @@
 $(document).ready(function($){
+	
 	$('.submit').click(function(){
 		$('.loader').css('visibility','visible');
 		console.log('clicked');
