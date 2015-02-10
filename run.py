@@ -7,7 +7,6 @@ from timer import timeit
 from pprint import pprint
 
 
-
 class Award(object):
 
 	def __init__(self, t, f, n):
@@ -15,6 +14,9 @@ class Award(object):
 		self.filters    = f
 		self.nominees   = {nominee: 0 for nominee in n}
 		self.presenters = {}
+
+	def get_title(self):
+		return self.title
 
 	def get_filters(self):
 		return self.filters
@@ -24,6 +26,15 @@ class Award(object):
 
 	def get_presenters(self):
 		return self.presenters.keys()
+
+	def set_title(self, t):
+		self.title = t
+
+	def set_filters(self, f):
+		self.filters = f
+
+	def set_nominees(self, n):
+		self.nominees = {nominee: 0 for nominee in n}
 
 	def add_presenter(self, p):
 		self.presenters[p] = 1
@@ -35,16 +46,14 @@ class Award(object):
 		self.presenters[p] += 1
 
 	def show(self):
-		winner =  dict(sorted(self.nominees.iteritems(), key=operator.itemgetter(1), reverse=True)[:1])
+		winner     = dict(sorted(self.nominees.iteritems(), key=operator.itemgetter(1), reverse=True)[:1])
 		presenters = dict(sorted(self.presenters.iteritems(), key=operator.itemgetter(1), reverse=True)[:3])
 		print "-- Award: " + self.title
-		# print "     Presented by: " + str(presenters.keys()[0]).title() + " & " + str(presenters.keys()[1]).title()
 		print "     Presented by: " + str(sorted(self.presenters.iteritems(), key=operator.itemgetter(1), reverse=True))
 		print "     Winner: " + winner.keys()[0].title()
 
 	def show_api(self):
 		winner =  dict(sorted(self.nominees.iteritems(), key=operator.itemgetter(1), reverse=True)[:1])
-		print self.nominees.keys()
 		return {"award" : self.title, "winner" : winner.keys()[0].title(), "nominees" : self.nominees.keys()}
 
 
@@ -68,23 +77,30 @@ def find_presenter_names(tweet):
 def determine_results(awards, hosts):
 	hosts = dict(sorted(hosts.iteritems(), key=operator.itemgetter(1), reverse=True)[:2])
 	print "\n\nOutcome of the 2015 Golden Globes"
-	print "  Hosted by: " + str(hosts.keys()[0]).title() + " & " + str(hosts.keys()[1]).title()
-	print ""
+	print "  Hosted by: " + str(hosts.keys()[0]).title() + " & " + str(hosts.keys()[1]).title() + "\n"
 	for award in awards:
 		award.show()
+
+
 
 def hosts_api(hosts):
 	hosts = dict(sorted(hosts.iteritems(), key=operator.itemgetter(1), reverse=True)[:2])
 	return [{'hosts': hosts.keys()}]
 
+
+
 def awards_api(awards):
 	return [award.show_api() for award in awards]
+
+
 
 def nominees_api(nominees):
 	nominee_compiled = []
 	for mov in nominees:
 		nominee_compiled.extend(mov)
 	return nominee_compiled
+
+
 
 # def nominees_api_dict(award_titles, nominees):
 # 	nom_dict = {}
