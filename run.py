@@ -119,6 +119,7 @@ def main():
 	f_2015      = './goldenglobes2015.json'
 	f_2013      = './gg2013.json'
 
+	# Tweet Parsing Filters
 	host_filters      = ["host", "hosting", "hosts", "hosted"]
 	presenter_filters = ["presented", "presenting", "presenter"]
 	award_filters     = [["best motion picture", "drama"],
@@ -135,6 +136,8 @@ def main():
 					     ["best original song", "best song"],
 					     ["best animated"],
 					     ["foreign", "language"]]
+
+	# Hardcoded Info
 	nominees          = [["boyhood", "foxcatcher", "the imitation game", "selma", "the theory of everything"],
 						 ["the grand budapest hotel", "birdman", "into the woods", "pride", "st. vincent"],
 						 ["eddie redmayne", "steve carell", "benedict cumberbatch", "jake gyllenhaal", "david oyelowo"],
@@ -164,13 +167,12 @@ def main():
 						 "Best Animated Feature Film",
 						 "Best Foreign Language Film"]
 						 
+	# Create Award object for each award
 	awards = [Award(award_titles[x], award_filters[x], nominees[x]) for x in range(14)]
 	print "Awards created..."
 
+	# Read and parse through tweets
 	potential_hosts      = {}
-	potential_presenters = {}
-	potential_nominees   = {}
-
 	count = 0
 	curr_percent = -5
  	with open(f_2015_mini, 'r') as f:
@@ -183,7 +185,7 @@ def main():
 			names = ""
 			presenter_names = ""
 
-			# Filter for hosts
+			# Find hosts
 			for filt in host_filters:
 				if filt in text:
 					names = find_names(text)
@@ -193,7 +195,7 @@ def main():
 						else: 
 							potential_hosts[name] = 1
 
-			# filter for nominees and presenters
+			# Find nominees and presenters
 			for award in awards:
 				for filt in award.get_filters():
 					if filt in text:
@@ -210,6 +212,7 @@ def main():
 									else:
 										award.add_presenter(pn.lower())
 
+			# Display progress in terminal
 			if not count % 100:
 				percent = (float(count)/num_tweets) * 100
 				if percent > curr_percent:
@@ -218,12 +221,13 @@ def main():
 					sys.stdout.flush()
 			count+=1
 
+	# Determine and display results in terminal
 	determine_results(awards, potential_hosts)
 	
+	# Determine and display results in frontend
 	final_awards = awards_api(awards)
 	final_hosts  = hosts_api(potential_hosts)
 	final_nominees = nominees_api(nominees)
-
 	return (final_hosts, final_awards, final_nominees)
 
 
