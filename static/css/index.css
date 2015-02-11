@@ -1,6 +1,6 @@
 #sidebar{
 	background-color: #4e015c;
-	min-height:120%;
+	min-height:200%;
 	border-width: 10px;
 	border-style: solid;
 	border-left-style: none;
@@ -29,7 +29,12 @@
 .color{
 	background-color: #C29EE5;
 }
-
+.awards{
+	font-size: 10px;
+}
+.all{
+	font-size: 14px;
+}
 .box{
 	display: flex;
  	justify-content: center;
