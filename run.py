@@ -45,6 +45,10 @@ class Award(object):
 	def increment_presenter(self, p):
 		self.presenters[p] += 1
 
+	def remove_presenter(self, p):
+		if p in self.presenters:
+			self.presenters.pop(p, None)
+
 	def show(self):
 		winner     = dict(sorted(self.nominees.iteritems(), key=operator.itemgetter(1), reverse=True)[:1])
 		presenters = dict(sorted(self.presenters.iteritems(), key=operator.itemgetter(1), reverse=True)[:3])
@@ -136,20 +140,6 @@ def main():
 						 [["best"], ["song"]],
 						 [["best"], ["animated"]],
 						 [["best"], ["foreign"]]]
-	# award_filters     = [#["best motion picture", "best picture", "drama"],
-	# 					   #["best motion picture", "musical", "comedy"],
-	# 					   #["best actor in a motion picture", "drama"],
-	# 					   #["best actress in a motion picture", "drama"],
-	# 					   #["best actor in a motion picture", "comedy", "musical"],
-	# 					   #["best actress in a motion picture", "comedy", "musical"],
-	# 				       #["best supporting actor in a motion picture", "drama", "musical", "comedy"],
-	# 				       #["best supporting actress in a motion picture", "drama", "musical", "comedy"],
-	# 				       #["best director"],
-	# 				       #["best screenplay"],
-	# 				       ["best original score", "best score"],
-	# 				       ["best original song", "best song"],
-	# 				       ["best animated"],
-	# 				       ["foreign", "language"]]
 
 	# Hardcoded Info
 	nominees          = [["boyhood", "foxcatcher", "the imitation game", "selma", "the theory of everything"],
@@ -180,7 +170,46 @@ def main():
 						 "Best Original Song",
 						 "Best Animated Feature Film",
 						 "Best Foreign Language Film"]
-						 
+	presenter_list	  = ["vince vaughn",
+						 "kate beckinsale", 
+						 "harrison ford",
+						 "chris pratt", 
+						 "lupita nyong'o",
+						 "colin farrell",
+						 "gwyneth paltrow",
+						 "katherine heigl", 
+						 "don cheadle", 
+						 "jane fonda", 
+						 "jennifer aniston", 
+						 "kristen wiig", 
+						 "adrien brody", 
+						 "david duchovny", 
+						 "prince", 
+						 "adam levine", 
+						 "kevin hart", 
+						 "jeremy renner", 
+						 "bryan cranston", 
+						 "matthew mcconaughey", 
+						 "sienna miller", 
+						 "benedict cumberbatch", 
+						 "katie holmes", 
+						 "salma hayek", 
+						 "meryl streep", 
+						 "jennifer lopez", 
+						 "anna faris", 
+						 "lily tomlin", 
+						 "amy adams", 
+						 "jamie dornan", 
+						 "jared leto", 
+						 "kerry washington", 
+						 "ricky gervais", 
+						 "robert downey, jr.", 
+						 "bill hader", 
+						 "paul rudd", 
+						 "dakota johnson", 
+						 "seth meyers", 
+						 "julianna margulies"]
+
 	# Create Award object for each award
 	awards = [Award(award_titles[x], award_filters[x], nominees[x]) for x in range(14)]
 	print "Awards created..."
@@ -213,21 +242,17 @@ def main():
 			# for each award
 			for award in awards:
 				for filt in award.get_filters():
-					# check if tweet contains award name
-					if filt in text:
+					if filt in text.lower():
 						for t in award.get_nominees():
 							# for each nominee that shows up in the tweet, increment its likelihood
 							if t in text.lower():
 								award.increment_nominee(t)
-						for filt in presenter_filters:
-							if filt in text:
-								if not presenter_names:
-									presenter_names = find_presenter_names(text)
-								for pn in presenter_names:
-									if pn.lower() in award.get_presenters():
-										award.increment_presenter(pn.lower())
-									else:
-										award.add_presenter(pn.lower())
+						for pn in presenter_list:
+							if pn in text.lower():
+								if pn.lower() in award.get_presenters():
+									award.increment_presenter(pn.lower())
+								else:
+									award.add_presenter(pn.lower())
 
 			# Display progress in terminal
 			if not count % 100:
@@ -239,6 +264,25 @@ def main():
 			count+=1
 
 	# Determine and display results in terminal
+
+	# ensure presenters only appear on their top award
+	for name in presenter_list:
+		for award in awards:
+			if name in award.nominees:
+				award.presenters.pop(name)
+		# curr_max = 0
+		# max_award = awards[0]
+		# for award in awards:
+		# 	curr_presenters = award.presenters
+		# 	if name in curr_presenters.keys():
+		# 		if curr_presenters[name] > curr_max:
+		# 			max_award = award
+		# 			curr_max = curr_presenters[name]
+		# for award in awards:
+		# 	if award is not max_award:
+		# 		if name in award.presenters:
+		# 			award.presenters.pop(name)
+
 	determine_results(awards, potential_hosts)
 	
 	# Determine and display results in frontend
