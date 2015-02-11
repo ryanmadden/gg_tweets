@@ -45,6 +45,10 @@ class Award(object):
 	def increment_presenter(self, p):
 		self.presenters[p] += 1
 
+	def remove_presenter(self, p):
+		if p in self.presenters:
+			self.presenters.pop(p, None)
+
 	def show(self):
 		winner     = dict(sorted(self.nominees.iteritems(), key=operator.itemgetter(1), reverse=True)[:1])
 		presenters = dict(sorted(self.presenters.iteritems(), key=operator.itemgetter(1), reverse=True)[:3])
@@ -136,20 +140,6 @@ def main():
 						 [["best"], ["song"]],
 						 [["best"], ["animated"]],
 						 [["best"], ["foreign"]]]
-	# award_filters     = [#["best motion picture", "best picture", "drama"],
-	# 					   #["best motion picture", "musical", "comedy"],
-	# 					   #["best actor in a motion picture", "drama"],
-	# 					   #["best actress in a motion picture", "drama"],
-	# 					   #["best actor in a motion picture", "comedy", "musical"],
-	# 					   #["best actress in a motion picture", "comedy", "musical"],
-	# 				       #["best supporting actor in a motion picture", "drama", "musical", "comedy"],
-	# 				       #["best supporting actress in a motion picture", "drama", "musical", "comedy"],
-	# 				       #["best director"],
-	# 				       #["best screenplay"],
-	# 				       ["best original score", "best score"],
-	# 				       ["best original song", "best song"],
-	# 				       ["best animated"],
-	# 				       ["foreign", "language"]]
 
 	# Hardcoded Info
 	nominees          = [["boyhood", "foxcatcher", "the imitation game", "selma", "the theory of everything"],
@@ -158,14 +148,26 @@ def main():
 						 ["julianne moore", "jennifer aniston", "felicity jones", "rosamund pike", "reese witherspoon"],
 						 ["michael keaton", "ralph fiennes", "bill murray", "joaquin phoenix", "christoph waltz"],
 						 ["amy adams", "emily blunt", "helen mirren", "julianne moore", "quvenzhane wallis"],
-						 ["j. k. simmons", "robert duvall", "ethan hawke", "edward norton", "mark ruffalo"],
+						 ["j. k. simmons", "robert duvall", "edward norton", "mark ruffalo"],                                          #ethan hawke
 						 ["patricia arquette", "jessica chastain", "keira knightley", "emma stone", "meryl streep"],
-						 ["richard linklater", "wes anderson", "ava duvernay", "david fincher", "alejandro gonzalez inarritu"],
-						 ["birdman", "wes anderson", "gillian flynn", "richard linklater", "graham moore"],
-						 ["johann johannsson", "alexandre desplat", "trent reznor and atticus ross", "antonio sanchez", "hanz zimmer"],
-						 ["glory", "big eyes", "mercy is", "opportunity", "yellow flicker beat"],
+						 ["richard linklater", "wes anderson", "ava duvernay", "david fincher", "alejandro inarritu gonzalez"],
+						 ["birdman", "the grand budapest hotel", "gone girl", "the imitation game", "boyhood"],
+						 ["the imitation game", "birdman", "gone girl", "interstellar", "the theory of everything"],
+						 ["noah", "annie", "the hunger games: mockingjay - part 1", "selma" "big eyes"],
 						 ["how to train your dragon 2", "big hero 6", "the book of life", "the boxtrolls", "the lego movie"],
-						 ["leviathan", "force majeure", "gett: the trial of viviane amsalem", "ida", "tangerines"]]
+						 ["leviathan", "force majeure", "gett: the trial of viviane amsalem", "ida", "tangerines"],
+						 ["downton abbey (masterpiece)", "game of thrones", "the good wife", "house of cards", "the affair"]
+						 ["claire danes", "viola davis", "julianna margulies", "robin wright"],
+						 ["clive owen", "liev schreiber", "james spader", "dominic west", "kevin spacey"],
+						 ["girls", "jane the virgin", "orange is the new black", "silicon valley", "transparent"],
+						 ["lena dunham", "edie falco", "julia louis-dreyfus", "taylor schilling", "gina rodriguez"],
+						 ["louis c.k.", "don cheadle", "ricky gervais", "william h. macy", "jeffrey tambor"],
+						 ["the missing", "the normal heart", "olive kitteridge", "true detective", "fargo"],
+						 ["jessica lange", "frances mcdormand", "frances o'connor", "allison tolman", "maggie gyllenhaal"],
+						 ["martin freeman", "woody harrelson", "matthew mcconaughey", "mark ruffalo", "billy bob thornton"],
+						 ["uzo aduba", "kathy bates", "allison janney", "michelle monaghan", "joanne froggatt"],
+						 ["alan cumming", "colin hanks", "bill murray", "jon voight", "matt bomer"],
+						 ["george clooney"]
 	award_titles      = ["Best Motion Picture - Drama",
 						 "Best Motion Picture - Musical/Comedy",
 						 "Best Actor in a Motion Picture - Drama",
@@ -179,8 +181,59 @@ def main():
 						 "Best Original Score",
 						 "Best Original Song",
 						 "Best Animated Feature Film",
-						 "Best Foreign Language Film"]
-						 
+						 "Best Foreign Language Film",
+						# "Best Television Series - Drama",
+						# "Best Performance by an Actress in a Television Series - Drama",
+						#"Best Performance by an Actor in a Television Series - Drama",
+						#"Best Television Series - Comedy/Musical",
+						# "Best Performance by an Actress in a Television Series - Comedy/Musical",
+						 #"Best Performance by an Actor in a Television Series - Comedy/Musical",
+						 #"Best Mini-Series or Motion Picture Made for Television",
+						 #"Best Performance by an Actress in a Mini-Series or Motion Picture Made for Television",
+						 #"Best Performance by an Actor in a Mini-Series or Motion Picture Made for Television",
+						 #"Best Performance by an Actress in a Supporting Role in a Series, Mini-Series or Motion Picture Made for Television",
+						 #"Best Performance by an Actor in a Supporting Role in a Series, Mini-Series or Motion Picture Made for Television",
+						 "Cecil B. DeMille Award"]
+	presenter_list	  = ["vince vaughn",
+						 "kate beckinsale", 
+						 "harrison ford",
+						 "chris pratt", 
+						 "lupita nyong'o",
+						 "colin farrell",
+						 "gwyneth paltrow",
+						 "katherine heigl", 
+						 "don cheadle", 
+						 "jane fonda", 
+						 "jennifer aniston", 
+						 "kristen wiig", 
+						 "adrien brody", 
+						 "david duchovny", 
+						 "prince", 
+						 "adam levine", 
+						 "kevin hart", 
+						 "jeremy renner", 
+						 "bryan cranston", 
+						 "matthew mcconaughey", 
+						 "sienna miller", 
+						 "benedict cumberbatch", 
+						 "katie holmes", 
+						 "salma hayek", 
+						 "meryl streep", 
+						 "jennifer lopez", 
+						 "anna faris", 
+						 "lily tomlin", 
+						 "amy adams", 
+						 "jamie dornan", 
+						 "jared leto", 
+						 "kerry washington", 
+						 "ricky gervais", 
+						 "robert downey, jr.", 
+						 "bill hader", 
+						 "paul rudd", 
+						 "dakota johnson", 
+						 "seth meyers", 
+						 "julianna margulies"]
+
 	# Create Award object for each award
 	awards = [Award(award_titles[x], award_filters[x], nominees[x]) for x in range(14)]
 	print "Awards created..."
@@ -212,11 +265,15 @@ def main():
 			# Find nominees (working) and presenters (not working)
 			# for each award
 			for award in awards:
+<<<<<<< HEAD
 				# determine if tweet pertains to an award
+=======
+>>>>>>> hardcode-presenters
 				contains_award = True
 				for req in award.get_filters():
 					if not any(opt in text.lower() for opt in req):
 						contains_award = False
+<<<<<<< HEAD
 				# if it does,
 				if contains_award:
 					# check if a nominee shows up in the tweet
@@ -237,6 +294,19 @@ def main():
 									award.increment_presenter(pn.lower())
 								else:
 									award.add_presenter(pn.lower())
+=======
+				if contains_award:
+					for nom in award.get_nominees():
+						# for each nominee that shows up in the tweet, increment its likelihood
+						if nom in text.lower():
+							award.increment_nominee(nom)
+					for pn in presenter_list:
+						if pn in text.lower():
+							if pn.lower() in award.get_presenters():
+								award.increment_presenter(pn.lower())
+							else:
+								award.add_presenter(pn.lower())
+>>>>>>> hardcode-presenters
 
 			# Display progress in terminal
 			if not count % 100:
@@ -248,6 +318,25 @@ def main():
 			count+=1
 
 	# Determine and display results in terminal
+
+	# ensure presenters only appear on their top award
+	for name in presenter_list:
+		for award in awards:
+			if name in award.nominees:
+				award.presenters.pop(name)
+		# curr_max = 0
+		# max_award = awards[0]
+		# for award in awards:
+		# 	curr_presenters = award.presenters
+		# 	if name in curr_presenters.keys():
+		# 		if curr_presenters[name] > curr_max:
+		# 			max_award = award
+		# 			curr_max = curr_presenters[name]
+		# for award in awards:
+		# 	if award is not max_award:
+		# 		if name in award.presenters:
+		# 			award.presenters.pop(name)
+
 	determine_results(awards, potential_hosts)
 	
 	# Determine and display results in frontend
