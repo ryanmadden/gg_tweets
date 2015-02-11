@@ -148,14 +148,26 @@ def main():
 						 ["julianne moore", "jennifer aniston", "felicity jones", "rosamund pike", "reese witherspoon"],
 						 ["michael keaton", "ralph fiennes", "bill murray", "joaquin phoenix", "christoph waltz"],
 						 ["amy adams", "emily blunt", "helen mirren", "julianne moore", "quvenzhane wallis"],
-						 ["j. k. simmons", "robert duvall", "ethan hawke", "edward norton", "mark ruffalo"],
+						 ["j. k. simmons", "robert duvall", "edward norton", "mark ruffalo"],                                          #ethan hawke
 						 ["patricia arquette", "jessica chastain", "keira knightley", "emma stone", "meryl streep"],
-						 ["richard linklater", "wes anderson", "ava duvernay", "david fincher", "alejandro gonzalez inarritu"],
-						 ["birdman", "wes anderson", "gillian flynn", "richard linklater", "graham moore"],
-						 ["johann johannsson", "alexandre desplat", "trent reznor and atticus ross", "antonio sanchez", "hanz zimmer"],
-						 ["glory", "big eyes", "mercy is", "opportunity", "yellow flicker beat"],
+						 ["richard linklater", "wes anderson", "ava duvernay", "david fincher", "alejandro inarritu gonzalez"],
+						 ["birdman", "the grand budapest hotel", "gone girl", "the imitation game", "boyhood"],
+						 ["the imitation game", "birdman", "gone girl", "interstellar", "the theory of everything"],
+						 ["noah", "annie", "the hunger games: mockingjay - part 1", "selma" "big eyes"],
 						 ["how to train your dragon 2", "big hero 6", "the book of life", "the boxtrolls", "the lego movie"],
-						 ["leviathan", "force majeure", "gett: the trial of viviane amsalem", "ida", "tangerines"]]
+						 ["leviathan", "force majeure", "gett: the trial of viviane amsalem", "ida", "tangerines"],
+						 ["downton abbey (masterpiece)", "game of thrones", "the good wife", "house of cards", "the affair"]
+						 ["claire danes", "viola davis", "julianna margulies", "robin wright"],
+						 ["clive owen", "liev schreiber", "james spader", "dominic west", "kevin spacey"],
+						 ["girls", "jane the virgin", "orange is the new black", "silicon valley", "transparent"],
+						 ["lena dunham", "edie falco", "julia louis-dreyfus", "taylor schilling", "gina rodriguez"],
+						 ["louis c.k.", "don cheadle", "ricky gervais", "william h. macy", "jeffrey tambor"],
+						 ["the missing", "the normal heart", "olive kitteridge", "true detective", "fargo"],
+						 ["jessica lange", "frances mcdormand", "frances o'connor", "allison tolman", "maggie gyllenhaal"],
+						 ["martin freeman", "woody harrelson", "matthew mcconaughey", "mark ruffalo", "billy bob thornton"],
+						 ["uzo aduba", "kathy bates", "allison janney", "michelle monaghan", "joanne froggatt"],
+						 ["alan cumming", "colin hanks", "bill murray", "jon voight", "matt bomer"],
+						 ["george clooney"]
 	award_titles      = ["Best Motion Picture - Drama",
 						 "Best Motion Picture - Musical/Comedy",
 						 "Best Actor in a Motion Picture - Drama",
@@ -169,7 +181,19 @@ def main():
 						 "Best Original Score",
 						 "Best Original Song",
 						 "Best Animated Feature Film",
-						 "Best Foreign Language Film"]
+						 "Best Foreign Language Film",
+						# "Best Television Series - Drama",
+						# "Best Performance by an Actress in a Television Series - Drama",
+						#"Best Performance by an Actor in a Television Series - Drama",
+						#"Best Television Series - Comedy/Musical",
+						# "Best Performance by an Actress in a Television Series - Comedy/Musical",
+						 #"Best Performance by an Actor in a Television Series - Comedy/Musical",
+						 #"Best Mini-Series or Motion Picture Made for Television",
+						 #"Best Performance by an Actress in a Mini-Series or Motion Picture Made for Television",
+						 #"Best Performance by an Actor in a Mini-Series or Motion Picture Made for Television",
+						 #"Best Performance by an Actress in a Supporting Role in a Series, Mini-Series or Motion Picture Made for Television",
+						 #"Best Performance by an Actor in a Supporting Role in a Series, Mini-Series or Motion Picture Made for Television",
+						 "Cecil B. DeMille Award"]
 	presenter_list	  = ["vince vaughn",
 						 "kate beckinsale", 
 						 "harrison ford",
@@ -241,18 +265,21 @@ def main():
 			# Find nominees (working) and presenters (not working)
 			# for each award
 			for award in awards:
-				for filt in award.get_filters():
-					if filt in text.lower():
-						for t in award.get_nominees():
-							# for each nominee that shows up in the tweet, increment its likelihood
-							if t in text.lower():
-								award.increment_nominee(t)
-						for pn in presenter_list:
-							if pn in text.lower():
-								if pn.lower() in award.get_presenters():
-									award.increment_presenter(pn.lower())
-								else:
-									award.add_presenter(pn.lower())
+				contains_award = True
+				for req in award.get_filters():
+					if not any(opt in text.lower() for opt in req):
+						contains_award = False
+				if contains_award:
+					for nom in award.get_nominees():
+						# for each nominee that shows up in the tweet, increment its likelihood
+						if nom in text.lower():
+							award.increment_nominee(nom)
+					for pn in presenter_list:
+						if pn in text.lower():
+							if pn.lower() in award.get_presenters():
+								award.increment_presenter(pn.lower())
+							else:
+								award.add_presenter(pn.lower())
 
 			# Display progress in terminal
 			if not count % 100:
