@@ -237,22 +237,6 @@ def main():
 									award.increment_presenter(pn.lower())
 								else:
 									award.add_presenter(pn.lower())
-				# for filt in award.get_filters():
-				# 	# check if tweet contains award name
-				# 	if filt in text:
-				# 		for t in award.get_nominees():
-				# 			# for each nominee that shows up in the tweet, increment its likelihood
-				# 			if t in text.lower():
-				# 				award.increment_nominee(t)
-				# 		for filt in presenter_filters:
-				# 			if filt in text:
-				# 				if not presenter_names:
-				# 					presenter_names = find_presenter_names(text)
-				# 				for pn in presenter_names:
-				# 					if pn.lower() in award.get_presenters():
-				# 						award.increment_presenter(pn.lower())
-				# 					else:
-				# 						award.add_presenter(pn.lower())
 
 			# Display progress in terminal
 			if not count % 100:
