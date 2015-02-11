@@ -122,12 +122,12 @@ def main():
 	# Tweet Parsing Filters
 	host_filters      = ["host", "hosting", "hosts", "hosted"]
 	presenter_filters = ["presented", "presenting", "presenter"]
-	award_filters     = [[["best"], ["picture"], ["drama"]],
-						 [["best"], ["picture"], ["musical", "comedy"]],
-						 [["best"], ["actor"], ["drama"]],
-						 [["best"], ["actress"], ["drama"]],
-						 [["best"], ["actor"], ["musical", "comedy"]],
-						 [["best"], ["actress"], ["musical", "comedy"]],
+	award_filters     = [[["best"], ["picture"],    ["drama"]],
+						 [["best"], ["picture"],    ["musical", "comedy"]],
+						 [["best"], ["actor"],      ["drama"]],
+						 [["best"], ["actress"],    ["drama"]],
+						 [["best"], ["actor"],      ["musical", "comedy"]],
+						 [["best"], ["actress"],    ["musical", "comedy"]],
 						 [["best"], ["supporting"], ["actor"]],
 						 [["best"], ["supporting"], ["actress"]],
 						 [["best"], ["director"]],
@@ -212,22 +212,47 @@ def main():
 			# Find nominees (working) and presenters (not working)
 			# for each award
 			for award in awards:
-				for filt in award.get_filters():
-					# check if tweet contains award name
-					if filt in text:
-						for t in award.get_nominees():
-							# for each nominee that shows up in the tweet, increment its likelihood
-							if t in text.lower():
-								award.increment_nominee(t)
-						for filt in presenter_filters:
-							if filt in text:
-								if not presenter_names:
-									presenter_names = find_presenter_names(text)
-								for pn in presenter_names:
-									if pn.lower() in award.get_presenters():
-										award.increment_presenter(pn.lower())
-									else:
-										award.add_presenter(pn.lower())
+				# determine if tweet pertains to an award
+				contains_award = True
+				for req in award.get_filters():
+					if not any(opt in text.lower() for opt in req):
+						contains_award = False
+				# if it does,
+				if contains_award:
+					# check if a nominee shows up in the tweet
+					for nom in award.get_nominees():
+						# if one does,
+						if nom in text.lower():
+							# increment that nominee's weight
+							award.increment_nominee(nom)
+					# check if presenter shows up in the tweet
+					for filt in presenter_filters:
+						# if one does,
+						if filt in text:
+							# increment that presenter's weight
+							if not presenter_names:
+								presenter_names = find_presenter_names(text)
+							for pn in presenter_names:
+								if pn.lower() in award.get_presenters():
+									award.increment_presenter(pn.lower())
+								else:
+									award.add_presenter(pn.lower())
+				# for filt in award.get_filters():
+				# 	# check if tweet contains award name
+				# 	if filt in text:
+				# 		for t in award.get_nominees():
+				# 			# for each nominee that shows up in the tweet, increment its likelihood
+				# 			if t in text.lower():
+				# 				award.increment_nominee(t)
+				# 		for filt in presenter_filters:
+				# 			if filt in text:
+				# 				if not presenter_names:
+				# 					presenter_names = find_presenter_names(text)
+				# 				for pn in presenter_names:
+				# 					if pn.lower() in award.get_presenters():
+				# 						award.increment_presenter(pn.lower())
+				# 					else:
+				# 						award.add_presenter(pn.lower())
 
 			# Display progress in terminal
 			if not count % 100:
