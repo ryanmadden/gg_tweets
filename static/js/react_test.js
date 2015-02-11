@@ -138,7 +138,7 @@ React.render(
 var AImage = React.createClass({
   render: function() {
     return (
-      <a href={this.props.link}>
+      <a href={this.props.href}>
         <img src={this.props.src}/>
       </a>
     );
@@ -147,10 +147,7 @@ var AImage = React.createClass({
 
 var ImageList = React.createClass({
   render: function() {
-    console.log(this.props);
-    console.log(this.props.data);
     var image_nodes = this.props.data.map(function(obj){
-      console.log(obj);
       return (
         <li>
           <AImage src={obj.img} href={obj.link}>
@@ -194,6 +191,8 @@ var ImageContainer = React.createClass({
   render: function() {
     return (
       <div className="ImageContainer">
+        <h2>Click the images to view the best dressed people of the golden globes</h2>
+        <h3>images are displayed in order of popularity</h3>
         <ImageList data={this.state.data} />
       </div>
     );
