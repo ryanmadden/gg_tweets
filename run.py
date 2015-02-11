@@ -7,7 +7,6 @@ from timer import timeit
 from pprint import pprint
 
 
-
 class Award(object):
 
 	def __init__(self, t, f, n):
@@ -15,6 +14,9 @@ class Award(object):
 		self.filters    = f
 		self.nominees   = {nominee: 0 for nominee in n}
 		self.presenters = {}
+
+	def get_title(self):
+		return self.title
 
 	def get_filters(self):
 		return self.filters
@@ -24,6 +26,15 @@ class Award(object):
 
 	def get_presenters(self):
 		return self.presenters.keys()
+
+	def set_title(self, t):
+		self.title = t
+
+	def set_filters(self, f):
+		self.filters = f
+
+	def set_nominees(self, n):
+		self.nominees = {nominee: 0 for nominee in n}
 
 	def add_presenter(self, p):
 		self.presenters[p] = 1
@@ -35,16 +46,14 @@ class Award(object):
 		self.presenters[p] += 1
 
 	def show(self):
-		winner =  dict(sorted(self.nominees.iteritems(), key=operator.itemgetter(1), reverse=True)[:1])
+		winner     = dict(sorted(self.nominees.iteritems(), key=operator.itemgetter(1), reverse=True)[:1])
 		presenters = dict(sorted(self.presenters.iteritems(), key=operator.itemgetter(1), reverse=True)[:3])
 		print "-- Award: " + self.title
-		# print "     Presented by: " + str(presenters.keys()[0]).title() + " & " + str(presenters.keys()[1]).title()
 		print "     Presented by: " + str(sorted(self.presenters.iteritems(), key=operator.itemgetter(1), reverse=True))
 		print "     Winner: " + winner.keys()[0].title()
 
 	def show_api(self):
 		winner =  dict(sorted(self.nominees.iteritems(), key=operator.itemgetter(1), reverse=True)[:1])
-		print self.nominees.keys()
 		return {"award" : self.title, "winner" : winner.keys()[0].title(), "nominees" : self.nominees.keys()}
 
 
@@ -68,17 +77,22 @@ def find_presenter_names(tweet):
 def determine_results(awards, hosts):
 	hosts = dict(sorted(hosts.iteritems(), key=operator.itemgetter(1), reverse=True)[:2])
 	print "\n\nOutcome of the 2015 Golden Globes"
-	print "  Hosted by: " + str(hosts.keys()[0]).title() + " & " + str(hosts.keys()[1]).title()
-	print ""
+	print "  Hosted by: " + str(hosts.keys()[0]).title() + " & " + str(hosts.keys()[1]).title() + "\n"
 	for award in awards:
 		award.show()
+
+
 
 def hosts_api(hosts):
 	hosts = dict(sorted(hosts.iteritems(), key=operator.itemgetter(1), reverse=True)[:2])
 	return [{'hosts': hosts.keys()}]
 
+
+
 def awards_api(awards):
 	return [award.show_api() for award in awards]
+
+
 
 def nominees_api(nominees):
 	nominee_compiled = []
@@ -87,29 +101,45 @@ def nominees_api(nominees):
 	return nominee_compiled
 
 
-
 @timeit
 def main():
 	f_2015_mini = './gg15mini.json'
 	f_2015      = './goldenglobes2015.json'
 	f_2013      = './gg2013.json'
 
+	# Tweet Parsing Filters
 	host_filters      = ["host", "hosting", "hosts", "hosted"]
 	presenter_filters = ["presented", "presenting", "presenter"]
-	award_filters     = [["best motion picture", "drama"],
-						 ["best motion picture", "musical", "comedy"],
-						 ["best actor in a motion picture", "drama"],
-						 ["best actress in a motion picture", "drama"],
-						 ["best actor in a motion picture", "comedy", "musical"],
-						 ["best actress in a motion picture", "comedy", "musical"],
-					     ["best supporting actor in a motion picture", "drama", "musical", "comedy"],
-					     ["best supporting actress in a motion picture", "drama", "musical", "comedy"],
-					     ["best director"],
-					     ["best screenplay"],
-					     ["best original score", "best score"],
-					     ["best original song", "best song"],
-					     ["best animated"],
-					     ["foreign", "language"]]
+	award_filters     = [[["best"], ["picture"], ["drama"]],
+						 [["best"], ["picture"], ["musical", "comedy"]],
+						 [["best"], ["actor"], ["drama"]],
+						 [["best"], ["actress"], ["drama"]],
+						 [["best"], ["actor"], ["musical", "comedy"]],
+						 [["best"], ["actress"], ["musical", "comedy"]],
+						 [["best"], ["supporting"], ["actor"]],
+						 [["best"], ["supporting"], ["actress"]],
+						 [["best"], ["director"]],
+						 [["best"], ["screenplay"]],
+						 [["best"], ["score"]],
+						 [["best"], ["song"]],
+						 [["best"], ["animated"]],
+						 [["best"], ["foreign"]]]
+	# award_filters     = [#["best motion picture", "best picture", "drama"],
+	# 					   #["best motion picture", "musical", "comedy"],
+	# 					   #["best actor in a motion picture", "drama"],
+	# 					   #["best actress in a motion picture", "drama"],
+	# 					   #["best actor in a motion picture", "comedy", "musical"],
+	# 					   #["best actress in a motion picture", "comedy", "musical"],
+	# 				       #["best supporting actor in a motion picture", "drama", "musical", "comedy"],
+	# 				       #["best supporting actress in a motion picture", "drama", "musical", "comedy"],
+	# 				       #["best director"],
+	# 				       #["best screenplay"],
+	# 				       ["best original score", "best score"],
+	# 				       ["best original song", "best song"],
+	# 				       ["best animated"],
+	# 				       ["foreign", "language"]]
+
+	# Hardcoded Info
 	nominees          = [["boyhood", "foxcatcher", "the imitation game", "selma", "the theory of everything"],
 						 ["the grand budapest hotel", "birdman", "into the woods", "pride", "st. vincent"],
 						 ["eddie redmayne", "steve carell", "benedict cumberbatch", "jake gyllenhaal", "david oyelowo"],
@@ -139,13 +169,12 @@ def main():
 						 "Best Animated Feature Film",
 						 "Best Foreign Language Film"]
 						 
+	# Create Award object for each award
 	awards = [Award(award_titles[x], award_filters[x], nominees[x]) for x in range(14)]
 	print "Awards created..."
 
+	# Read and parse through tweets
 	potential_hosts      = {}
-	potential_presenters = {}
-	potential_nominees   = {}
-
 	count = 0
 	curr_percent = -5
  	with open(f_2015_mini, 'r') as f:
@@ -158,7 +187,7 @@ def main():
 			names = ""
 			presenter_names = ""
 
-			# Filter for hosts
+			# Find hosts (working)
 			for filt in host_filters:
 				if filt in text:
 					names = find_names(text)
@@ -168,11 +197,14 @@ def main():
 						else: 
 							potential_hosts[name] = 1
 
-			# filter for nominees and presenters
+			# Find nominees (working) and presenters (not working)
+			# for each award
 			for award in awards:
 				for filt in award.get_filters():
+					# check if tweet contains award name
 					if filt in text:
 						for t in award.get_nominees():
+							# for each nominee that shows up in the tweet, increment its likelihood
 							if t in text.lower():
 								award.increment_nominee(t)
 						for filt in presenter_filters:
@@ -185,6 +217,7 @@ def main():
 									else:
 										award.add_presenter(pn.lower())
 
+			# Display progress in terminal
 			if not count % 100:
 				percent = (float(count)/num_tweets) * 100
 				if percent > curr_percent:
@@ -193,12 +226,13 @@ def main():
 					sys.stdout.flush()
 			count+=1
 
+	# Determine and display results in terminal
 	determine_results(awards, potential_hosts)
 	
+	# Determine and display results in frontend
 	final_awards = awards_api(awards)
 	final_hosts  = hosts_api(potential_hosts)
 	final_nominees = nominees_api(nominees)
-
 	return (final_hosts, final_awards, final_nominees)
 
 
