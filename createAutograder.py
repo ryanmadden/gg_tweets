@@ -18,15 +18,19 @@ def create_meta_data(year):
 # TODO: add presenters and nominees
 def create_unstructured(hosts, awards, nominees):
 	unstructured = {}
-	winners = []
-	awards = [] 
+	winners_unstructured = []
+	awards_unstructured = [] 
 	for each in hosts:
 		unstructured["hosts"] = each["hosts"]
 	for each in awards:
-		winner.append(each["winner"])
-		awards.append(each["award"])
-	unstructured["winners"] = winners
-	unstructured["awards"] = awards
+		winners_unstructured.append(each["winner"])
+		awards_unstructured.append(each["award"])
+	unstructured["winners"] = winners_unstructured
+	print winners_unstructured
+	unstructured["awards"] = awards_unstructured
+	
+	print awards_unstructured
+
 	unstructured["nominees"] = nominees
 	return unstructured
 

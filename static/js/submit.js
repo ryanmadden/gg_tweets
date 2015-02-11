@@ -31,7 +31,6 @@ $(document).ready(function($){
 
 });
 
-
 $(function() {
 
     var $sidebar   = $("#sidebar"), 
@@ -50,5 +49,3 @@ $(function() {
             });
         }
     });
-    
-});
