@@ -86,15 +86,6 @@ def nominees_api(nominees):
 		nominee_compiled.extend(mov)
 	return nominee_compiled
 
-# def nominees_api_dict(award_titles, nominees):
-# 	nom_dict = {}
-# 	for a,n in zip(award_titles, nominees):
-# 		if a in nom_dict:
-# 			nom_dict[a].append(n)
-# 		else:
-# 			nom_dict[a] = [n]
-# 	return nom_dict
-
 
 
 @timeit

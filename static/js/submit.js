@@ -11,11 +11,21 @@ $(document).ready(function($){
 	})
 
 	$('#host').click(function(){
-		$.post('/host')	
+		$.post('/host')
+		$('#best-dressed-images').css('display', 'none')	
 	})
 
 	$('.awards').click(function(IDofObject){
 		$.post('/awards/'+this.id)
+		$('#best-dressed-images').css('display', 'none')
+	});
+
+	$('#best-dressed-submit').click(function(){
+		$('.loader').css('visibility','visible');
+		$.post('/best-dressed.json', function(){
+			$('.loader').css('visibility','hidden')	
+			$('#best-dressed-images').css('display', 'initial')
+		});
 	});
 
 
@@ -27,7 +37,7 @@ $(function() {
     var $sidebar   = $("#sidebar"), 
         $window    = $(window),
         offset     = $sidebar.offset(),
-        topPadding = 15;
+        topPadding = 0;
 
     $window.scroll(function() {
         if ($window.scrollTop() > offset.top) {
