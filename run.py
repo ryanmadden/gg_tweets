@@ -9,9 +9,10 @@ from pprint import pprint
 
 class Award(object):
 
-	def __init__(self, t, f, n):
+	def __init__(self, t, f, s, n):
 		self.title      = t
 		self.filters    = f
+		self.stoplist   = s
 		self.nominees   = {nominee: 0 for nominee in n}
 		self.presenters = {}
 
@@ -20,6 +21,9 @@ class Award(object):
 
 	def get_filters(self):
 		return self.filters
+
+	def get_stoplist(self):
+		return self.stoplist
 
 	def get_nominees(self):
 		return self.nominees.keys()
@@ -32,6 +36,9 @@ class Award(object):
 
 	def set_filters(self, f):
 		self.filters = f
+
+	def set_stoplist(self, s):
+		self.stoplist = s
 
 	def set_nominees(self, n):
 		self.nominees = {nominee: 0 for nominee in n}
@@ -114,33 +121,58 @@ def main():
 	# Tweet Parsing Filters
 	host_filters      = ["host", "hosting", "hosts", "hosted"]
 	presenter_filters = ["presented", "presenting", "presenter"]
-	award_filters     = [[["best"],             ["picture"],                    ["drama"]],
-						 [["best"],             ["picture"],                    ["musical", "comedy"]],
-						 [["best"],             ["actor"],                      ["drama"]],
-						 [["best"],             ["actress"],                    ["drama"]],
-						 [["best"],             ["actor"],                      ["musical", "comedy"]],
-						 [["best"],             ["actress"],                    ["musical", "comedy"]],
-						 [["best"],             ["supporting"],                 ["actor"]],
-						 [["best"],             ["supporting"],                 ["actress"]],
+	award_filters     = [[["best"],             ["picture"],          ["drama"]],
+						 [["best"],             ["picture"],          ["musical", "comedy"]],
+						 [["best"],             ["actor"],            ["drama"]],
+						 [["best"],             ["actress"],          ["drama"]],
+						 [["best"],             ["actor"],            ["musical", "comedy"]],
+						 [["best"],             ["actress"],          ["musical", "comedy"]],
+						 [["best"],             ["supporting"],       ["actor"]],
+						 [["best"],             ["supporting"],       ["actress"]],
 						 [["best"],             ["director"]],
 						 [["best"],             ["screenplay"]],
 						 [["best"],             ["score"]],
 						 [["best"],             ["song"]],
 						 [["best"],             ["animated"]],
 						 [["best"],             ["foreign"]],
-						 [["best"],             ["television", "tv"],           ["drama"]],
-						 [["best"],             ["actress"],                    ["television", "tv"],           ["drama"]],
-						 [["best"],             ["actor"],                      ["television", "tv"],           ["drama"]],
-						 [["best"],             ["television", "tv"],           ["comedy", "musical"]],
-						 [["best"],             ["actress"],                    ["television", "tv"],           ["comedy", "musical"]],
-						 [["best"],             ["actor"],                      ["television", "tv"],           ["comedy", "musical"]],
-						 [["best"],             ["mini-series", "mini series"], ["television", "tv"]],
-						 [["best"],             ["actress"],                    ["mini-series", "mini series"], ["television", "tv"]],
-						 [["best"],             ["actor"],                      ["mini-series", "mini series"], ["television", "tv"]],
-						 [["best"],             ["actress"],                    ["supporting"],                 ["series", "mini-series", "mini series"], ["television", "tv"]],
-						 [["best"],             ["actor"],                      ["supporting"],                 ["series", "mini-series", "mini series"], ["television", "tv"]],
-						 [["cecil", "demille"]]
-						 ]
+						 [["best"],             ["television", "tv"], ["drama"]],
+						 [["best"],             ["actress"],          ["television", "tv"],   ["drama"]],
+						 [["best"],             ["actor"],            ["television", "tv"],   ["drama"]],
+						 [["best"],             ["television", "tv"], ["comedy", "musical"]],
+						 [["best"],             ["actress"],          ["television", "tv"],   ["comedy", "musical"]],
+						 [["best"],             ["actor"],            ["television", "tv"],   ["comedy", "musical"]],
+						 [["best"],             ["series"],           ["television", "tv"]],
+						 [["best"],             ["actress"],          ["series"],             ["television", "tv"]],
+						 [["best"],             ["actor"],            ["series"],             ["television", "tv"]],
+						 [["best"],             ["actress"],          ["supporting"],         ["series"],             ["television", "tv"]],
+						 [["best"],             ["actor"],            ["supporting"],         ["series"],             ["television", "tv"]],
+						 [["cecil", "demille"]]]
+	award_stoplists =   [["television", "tv"],
+						 ["television", "tv"],
+						 ["television", "tv"],
+						 ["television", "tv"],
+						 ["television", "tv"],
+						 ["television", "tv"],
+						 ["television", "tv"],
+						 ["television", "tv"],
+						 [],
+						 [],
+						 [],
+						 [],
+						 [],
+						 [],
+						 [],
+						 [],
+						 [],
+						 [],
+						 [],
+						 [],
+						 [],
+						 [],
+						 [],
+						 [],
+						 [],
+						 []]
 
 	# Hardcoded Info
 	nominees          = [["boyhood", "foxcatcher", "the imitation game", "selma", "the theory of everything"],
@@ -236,8 +268,8 @@ def main():
 						 "julianna margulies"]
 
 	# Create Award object for each award
-	awards = [Award(award_titles[x], award_filters[x], nominees[x]) for x in range(len(award_titles))]
-	print "Awards created..."
+	print "Creating awards..."
+	awards = [Award(award_titles[x], award_filters[x], award_stoplists[x], nominees[x]) for x in range(len(award_titles))]
 
 	# Read and parse through tweets
 	potential_hosts      = {}
@@ -246,11 +278,11 @@ def main():
  	with open(f_2015_mini, 'r') as f:
 
 
-
+ 		print "Creating tweet collection..."
  		tweets = map(json.loads, f)[0]
-		print "Tweet collection created..."
 		num_tweets = len(tweets)
 
+		print "Reading tweets..."
 		for tweet in tweets:
 			text  = tweet['text']
 			names = ""
@@ -273,6 +305,8 @@ def main():
 				for req in award.get_filters():
 					if not any(opt in text.lower() for opt in req):
 						contains_award = False
+				if any(stop in text.lower() for stop in award.get_stoplist()):
+					contains_award = False
 				if contains_award:
 					for nom in award.get_nominees():
 						# for each nominee that shows up in the tweet, increment its likelihood
@@ -294,27 +328,30 @@ def main():
 					sys.stdout.flush()
 			count+=1
 
-	# Determine and display results in terminal
 
-	# ensure presenters only appear on their top award
-	for name in presenter_list:
+	# POST-FILTERING
+	# Nominees for an award cannot present the award
+	for presenter in presenter_list:
 		for award in awards:
-			if name in award.nominees:
-				award.presenters.pop(name)
+			if presenter in award.get_nominees():
+				award.presenters.pop(presenter)
 
-		# curr_max = 0
-		# max_award = awards[0]
-		# for award in awards:
-		# 	curr_presenters = award.presenters
-		# 	if name in curr_presenters.keys():
-		# 		if curr_presenters[name] > curr_max:
-		# 			max_award = award
-		# 			curr_max = curr_presenters[name]
-		# for award in awards:
-		# 	if award is not max_award:
-		# 		if name in award.presenters:
-		# 			award.presenters.pop(name)
+	# Grant presenters to highly-weighted awards
+	for presenter in presenter_list:
+		local_max = 0
+		local_max_award = None
+		for award in awards:
+			if presenter in award.get_presenters():
+				if award.presenters[presenter] > local_max:
+					local_max = award.presenters[presenter]
+					local_max_award = award
+		for award in awards:
+			if presenter in award.get_presenters():
+				if local_max - award.presenters[presenter] > 15:
+					award.presenters.pop(presenter)
 
+
+	# Determine and display results in terminal
 	determine_results(awards, potential_hosts)
 	
 	# Determine and display results in frontend
