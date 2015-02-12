@@ -52,7 +52,7 @@ class Award(object):
 	def show(self):
 		winner     = dict(sorted(self.nominees.iteritems(), key=operator.itemgetter(1), reverse=True)[:1])
 		presenters = dict(sorted(self.presenters.iteritems(), key=operator.itemgetter(1), reverse=True)[:3])
-		print "-- Award: " + self.title
+		print "\n-- Award: " + self.title
 		print "     Presented by: " + str(sorted(self.presenters.iteritems(), key=operator.itemgetter(1), reverse=True))
 		print "     Winner: " + winner.keys()[0].title()
 
@@ -114,20 +114,33 @@ def main():
 	# Tweet Parsing Filters
 	host_filters      = ["host", "hosting", "hosts", "hosted"]
 	presenter_filters = ["presented", "presenting", "presenter"]
-	award_filters     = [[["best"], ["picture"], ["drama"]],
-						 [["best"], ["picture"], ["musical", "comedy"]],
-						 [["best"], ["actor"], ["drama"]],
-						 [["best"], ["actress"], ["drama"]],
-						 [["best"], ["actor"], ["musical", "comedy"]],
-						 [["best"], ["actress"], ["musical", "comedy"]],
-						 [["best"], ["supporting"], ["actor"]],
-						 [["best"], ["supporting"], ["actress"]],
-						 [["best"], ["director"]],
-						 [["best"], ["screenplay"]],
-						 [["best"], ["score"]],
-						 [["best"], ["song"]],
-						 [["best"], ["animated"]],
-						 [["best"], ["foreign"]]]
+	award_filters     = [[["best"],             ["picture"],                    ["drama"]],
+						 [["best"],             ["picture"],                    ["musical", "comedy"]],
+						 [["best"],             ["actor"],                      ["drama"]],
+						 [["best"],             ["actress"],                    ["drama"]],
+						 [["best"],             ["actor"],                      ["musical", "comedy"]],
+						 [["best"],             ["actress"],                    ["musical", "comedy"]],
+						 [["best"],             ["supporting"],                 ["actor"]],
+						 [["best"],             ["supporting"],                 ["actress"]],
+						 [["best"],             ["director"]],
+						 [["best"],             ["screenplay"]],
+						 [["best"],             ["score"]],
+						 [["best"],             ["song"]],
+						 [["best"],             ["animated"]],
+						 [["best"],             ["foreign"]],
+						 [["best"],             ["television", "tv"],           ["drama"]],
+						 [["best"],             ["actress"],                    ["television", "tv"],           ["drama"]],
+						 [["best"],             ["actor"],                      ["television", "tv"],           ["drama"]],
+						 [["best"],             ["television", "tv"],           ["comedy", "musical"]],
+						 [["best"],             ["actress"],                    ["television", "tv"],           ["comedy", "musical"]],
+						 [["best"],             ["actor"],                      ["television", "tv"],           ["comedy", "musical"]],
+						 [["best"],             ["mini-series", "mini series"], ["television", "tv"]],
+						 [["best"],             ["actress"],                    ["mini-series", "mini series"], ["television", "tv"]],
+						 [["best"],             ["actor"],                      ["mini-series", "mini series"], ["television", "tv"]],
+						 [["best"],             ["actress"],                    ["supporting"],                 ["series", "mini-series", "mini series"], ["television", "tv"]],
+						 [["best"],             ["actor"],                      ["supporting"],                 ["series", "mini-series", "mini series"], ["television", "tv"]],
+						 [["cecil", "demille"]]
+						 ]
 
 	# Hardcoded Info
 	nominees          = [["boyhood", "foxcatcher", "the imitation game", "selma", "the theory of everything"],
@@ -136,7 +149,7 @@ def main():
 						 ["julianne moore", "jennifer aniston", "felicity jones", "rosamund pike", "reese witherspoon"],
 						 ["michael keaton", "ralph fiennes", "bill murray", "joaquin phoenix", "christoph waltz"],
 						 ["amy adams", "emily blunt", "helen mirren", "julianne moore", "quvenzhane wallis"],
-						 ["j. k. simmons", "robert duvall", "edward norton", "mark ruffalo"],                                          #ethan hawke
+						 ["j. k. simmons", "robert duvall", "edward norton", "mark ruffalo"],
 						 ["patricia arquette", "jessica chastain", "keira knightley", "emma stone", "meryl streep"],
 						 ["richard linklater", "wes anderson", "ava duvernay", "david fincher", "alejandro inarritu gonzalez"],
 						 ["birdman", "the grand budapest hotel", "gone girl", "the imitation game", "boyhood"],
@@ -145,7 +158,7 @@ def main():
 						 ["how to train your dragon 2", "big hero 6", "the book of life", "the boxtrolls", "the lego movie"],
 						 ["leviathan", "force majeure", "gett: the trial of viviane amsalem", "ida", "tangerines"],
 						 ["downton abbey (masterpiece)", "game of thrones", "the good wife", "house of cards", "the affair"],
-						 ["claire danes", "viola davis", "julianna margulies", "robin wright"],
+						 ["claire danes", "viola davis", "julianna margulies", "robin wright", "ruth wilson"],
 						 ["clive owen", "liev schreiber", "james spader", "dominic west", "kevin spacey"],
 						 ["girls", "jane the virgin", "orange is the new black", "silicon valley", "transparent"],
 						 ["lena dunham", "edie falco", "julia louis-dreyfus", "taylor schilling", "gina rodriguez"],
@@ -156,8 +169,8 @@ def main():
 						 ["uzo aduba", "kathy bates", "allison janney", "michelle monaghan", "joanne froggatt"],
 						 ["alan cumming", "colin hanks", "bill murray", "jon voight", "matt bomer"],
 						 ["george clooney"]]	
-	award_titles 		= ["Best Motion Picture - Drama",
-						 "Best Motion Picture - Comedy Or Musical",
+	award_titles 	  = ["Best Motion Picture - Drama",
+				         "Best Motion Picture - Comedy Or Musical",
 						 "Best Performance by an Actor in a Motion Picture - Drama",
 						 "Best Performance by an Actress in a Motion Picture - Drama",
 						 "Best Performance by an Actor in a Motion Picture - Comedy Or Musical",
@@ -170,11 +183,11 @@ def main():
 						 "Best Original Song - Motion Picture",
 						 "Best Animated Feature Film",
 						 "Best Foreign Language Film",
-						"Best Television Series - Drama",
-						"Best Performance by an Actress in a Television Series - Drama",
-						"Best Performance by an Actor in a Television Series - Drama",
-						"Best Television Series - Comedy Or Musical",
-						"Best Performance by an Actress In A Television Series - Comedy Or Musical",
+						 "Best Television Series - Drama",
+						 "Best Performance by an Actress in a Television Series - Drama",
+						 "Best Performance by an Actor in a Television Series - Drama",
+						 "Best Television Series - Comedy Or Musical",
+						 "Best Performance by an Actress In A Television Series - Comedy Or Musical",
 						 "Best Performance by an Actor In A Television Series - Comedy Or Musical",
 						 "Best Mini-Series or Motion Picture Made for Television",
 						 "Best Performance by an Actress in a Mini-Series or Motion Picture Made for Television",
@@ -223,7 +236,7 @@ def main():
 						 "julianna margulies"]
 
 	# Create Award object for each award
-	awards = [Award(award_titles[x], award_filters[x], nominees[x]) for x in range(14)]
+	awards = [Award(award_titles[x], award_filters[x], nominees[x]) for x in range(len(award_titles))]
 	print "Awards created..."
 
 	# Read and parse through tweets
@@ -288,6 +301,7 @@ def main():
 		for award in awards:
 			if name in award.nominees:
 				award.presenters.pop(name)
+
 		# curr_max = 0
 		# max_award = awards[0]
 		# for award in awards:
