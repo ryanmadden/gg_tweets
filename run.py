@@ -60,7 +60,11 @@ class Award(object):
 		winner     = dict(sorted(self.nominees.iteritems(), key=operator.itemgetter(1), reverse=True)[:1])
 		presenters = dict(sorted(self.presenters.iteritems(), key=operator.itemgetter(1), reverse=True)[:3])
 		print "\n-- Award: " + self.title
-		print "     Presented by: " + str(sorted(self.presenters.iteritems(), key=operator.itemgetter(1), reverse=True))
+		# print "     Presented by: " + str(sorted(self.presenters.iteritems(), key=operator.itemgetter(1), reverse=True))
+		presenter_string = "     Presented by: "
+		for presenter in presenters.keys():
+			presenter_string += presenter.title() + " & "
+		print presenter_string
 		print "     Winner: " + winner.keys()[0].title()
 
 	def show_api(self):
