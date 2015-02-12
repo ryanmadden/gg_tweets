@@ -58,7 +58,7 @@ class Award(object):
 
 	def show_api(self):
 		winner =  dict(sorted(self.nominees.iteritems(), key=operator.itemgetter(1), reverse=True)[:1])
-		return {"award" : self.title, "winner" : winner.keys()[0].title(), "nominees" : self.nominees.keys()}
+		return {"award" : self.title, "winner" : winner.keys()[0].title(), "nominees" : self.nominees.keys(), "presenters" : self.presenters.keys()}
 
 
 
@@ -231,6 +231,9 @@ def main():
 	count = 0
 	curr_percent = -5
  	with open(f_2015_mini, 'r') as f:
+
+
+
  		tweets = map(json.loads, f)[0]
 		print "Tweet collection created..."
 		num_tweets = len(tweets)

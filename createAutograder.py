@@ -1,4 +1,5 @@
 import run
+from pprint import pprint
 
 def create_meta_each(method, method_description):
 	category = {}
@@ -39,7 +40,7 @@ def create_structured_each(each):
 	award = {}
 	award["winner"] = each["winner"]
 	award["nominees"] = each["nominees"]
-	award["presenters"] = []
+	award["presenters"] = each["presenters"]
 	return award
 
 def create_structured(awards):
@@ -62,6 +63,7 @@ def main(year):
 	autograder = {}
 	autograder["metadata"] = create_meta_data(year)
 	autograder["data"] = create_data()
+	pprint(autograder)
 	return autograder
 
 if __name__ == "__main__":

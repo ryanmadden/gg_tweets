@@ -40,8 +40,9 @@ def get_host():
 	return ""
 
 # create award json in data.json 
-@app.route('/awards/<award>', methods=['Post'])
+@app.route('/awards/<award>', methods=['POST'])
 def get_awards(award):
+	print award
 	award = award.replace('_','/')
 	#award_json_formated =[]
 	with open('autograder.json', 'r') as file:
