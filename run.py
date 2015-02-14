@@ -62,8 +62,10 @@ class Award(object):
 		print "\n-- Award: " + self.title
 		# print "     Presented by: " + str(sorted(self.presenters.iteritems(), key=operator.itemgetter(1), reverse=True))
 		presenter_string = "     Presented by: "
-		for presenter in presenters.keys():
-			presenter_string += presenter.title() + " & "
+		# for presenter in presenters.keys():
+		# TODO Uncomment this for pretty printing
+		# 	presenter_string += presenter.title() + " & "
+		print presenters
 		print presenter_string
 		print "     Winner: " + winner.keys()[0].title()
 
@@ -306,6 +308,7 @@ def main():
 			# for each award
 			for award in awards:
 				contains_award = True
+				# TODO put stop word analysis first to short circuit analysis of bad tweets, improves speed
 				for req in award.get_filters():
 					if not any(opt in text.lower() for opt in req):
 						contains_award = False
@@ -353,6 +356,25 @@ def main():
 			if presenter in award.get_presenters():
 				if local_max - award.presenters[presenter] > 15:
 					award.presenters.pop(presenter)
+
+	#Eliminate presenters who have <50% of the votes of the max presenter
+	for award in awards:
+		local_presenters = award.presenters
+		max_votes = max(local_presenters.values())
+		for presenter in award.get_presenters():
+			if award.presenters[presenter] < (max_votes/2):
+				award.presenters.pop(presenter)
+
+	# If an award still has >2 presenters, eliminate presenters who are listed in an award with 2 or 1 presenters
+	# TODO fix this so it works a little better
+	# for award in awards:
+	# 	if len(award.get_presenters()) > 2:
+	# 			for presenter in award.get_presenters():
+	# 				for award_inner in awards:
+	# 					if presenter in award_inner.get_presenters() and award_inner.presenters[presenter] == max(award_inner.presenters.values()):
+	# 						award.presenters.pop(presenter)
+	# 						break
+
 
 
 	# Determine and display results in terminal
