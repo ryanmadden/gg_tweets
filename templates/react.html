@@ -1,58 +1,66 @@
 {% extends "layout.html" %}
 {% block body %}
 
-<section id="sidebar">
-	<h2>Select Data to Display</h2>
-	<h4>Meta Data</h4>
-	<ul>
-		<li>Hosts</li>
-		<li>Best dressed image feed</li>
-	</ul>
-	<h4>Awards</h4>
-	<ul>
-		<li>All Awards</li>
-		<li>Best Motion Picture - Drama</li>
-		<li>Best Performance by an Actress in a Motion Picture - Drama</li>
-		<li>Best Performance by an Actor in a Motion Picture - Drama</li>
-		<li>Best Motion Picture - Comedy or Musical</li>
-		<li>Best Performance by an Actress in a Motion Picture - Comedy or Musical</li>
-		<li>Best Performance by an Actor in a Motion Picture - Comedy or Musical</li>
-		<li>Best Animated Feature Film</li>
-		<li>Best Foreign Language Film</li>
-		<li>Best Performance by an Actress in a Supporting Role in a Motion Picture</li>
-		<li>Best Performance by an Actor in a Supporting Role in a Motion Picture</li>
-		<li>Best Director - Motion Picture</li>
-		<li>Best Screenplay - Motion Picture</li>
-		<li>Best Original Score - Motion Picture</li>
-		<li>Best Original Song - Motion Picture</li>
-		<li>Best Television Series - Drama</li>
-		<li>Best Performance by an Actress in a Television Series - Drama</li>
-		<li>Best Performance by an Actor in a Television Series - Drama</li>
-		<li>Best Television Series - Comedy or Musical</li>
-		<li>Best Performance by an Actress in a Television Series - Comedy or Musical</li>
-		<li>Best Performance by an Actor in a Television Series - Comedy or Musical</li>
-		<li>Best Mini-Series or Motion Picture Made for Television</li>
-		<li>Best Performance by an Actress in a Mini-Series or Motion Picture Made for Television</li>
-		<li>Best Performance by an Actor in a Mini-Series or Motion Picture Made for Television</li>
-		<li>Best Performance by an Actress in a Supporting Role in a Series, Mini-Series, or Motion Picture Made for Television</li>
-		<li>Best Performance by an Actor in a Supporting Role in a Series, Mini-Series, or Motion Picture Made for Television</li>
-		<li>Cecil B. DeMille Award</li>
-	</ul>
-</section>
-
-
-<section id="main">
-	<h1>Golden Tweet Processing</h1>
-	<button id="2013">Process 2013 data</button>
-	<button id="2015">Process 2015 data</button>
-	<div class="load_wrapper">
-		<div class="loader"></div>
+<header>
+	<div id="header-inner">
+		<h1>Golden Globe Tweet Processing</h1>
+		<button id="2015">Process 2015 data</button>
+		<button id="2013">Process 2013 data</button>
 	</div>
-	<div id="best-dressed-images"></div>
+</header>
 
-	<div id="content"></div>
-	<script type="text/jsx;harmony=true" src="static/js/react_test.js"></script>
-</section>
+
+<main>
+	<section id="sidebar">
+		<h4>Meta Data</h4>
+		<ul>
+			<li>Hosts</li>
+			<li>Best dressed image feed</li>
+		</ul>
+		<h4>Awards</h4>
+		<ul>
+			<li>All Awards</li>
+			<li>Best Motion Picture - Drama</li>
+			<li>Best Performance by an Actress in a Motion Picture - Drama</li>
+			<li>Best Performance by an Actor in a Motion Picture - Drama</li>
+			<li>Best Motion Picture - Comedy or Musical</li>
+			<li>Best Performance by an Actress in a Motion Picture - Comedy or Musical</li>
+			<li>Best Performance by an Actor in a Motion Picture - Comedy or Musical</li>
+			<li>Best Animated Feature Film</li>
+			<li>Best Foreign Language Film</li>
+			<li>Best Performance by an Actress in a Supporting Role in a Motion Picture</li>
+			<li>Best Performance by an Actor in a Supporting Role in a Motion Picture</li>
+			<li>Best Director - Motion Picture</li>
+			<li>Best Screenplay - Motion Picture</li>
+			<li>Best Original Score - Motion Picture</li>
+			<li>Best Original Song - Motion Picture</li>
+			<li>Best Television Series - Drama</li>
+			<li>Best Performance by an Actress in a Television Series - Drama</li>
+			<li>Best Performance by an Actor in a Television Series - Drama</li>
+			<li>Best Television Series - Comedy or Musical</li>
+			<li>Best Performance by an Actress in a Television Series - Comedy or Musical</li>
+			<li>Best Performance by an Actor in a Television Series - Comedy or Musical</li>
+			<li>Best Mini-Series or Motion Picture Made for Television</li>
+			<li>Best Performance by an Actress in a Mini-Series or Motion Picture Made for Television</li>
+			<li>Best Performance by an Actor in a Mini-Series or Motion Picture Made for Television</li>
+			<li>Best Performance by an Actress in a Supporting Role in a Series, Mini-Series, or Motion Picture Made for Television</li>
+			<li>Best Performance by an Actor in a Supporting Role in a Series, Mini-Series, or Motion Picture Made for Television</li>
+			<li>Cecil B. DeMille Award</li>
+		</ul>
+	</section>
+
+
+	<section id="main">
+		<h1>Golden Tweet Processing</h1>
+		<div class="load_wrapper">
+			<div class="loader"></div>
+		</div>
+		<div id="best-dressed-images"></div>
+
+		<div id="content"></div>
+		<script type="text/jsx;harmony=true" src="static/js/react_test.js"></script>
+	</section>
+</main>
 
 
 {% endblock %}

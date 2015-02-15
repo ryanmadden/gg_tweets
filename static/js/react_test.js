@@ -17,10 +17,8 @@ var Data = React.createClass({
       );
     }
 
-    console.log('hello')
     if(this.props['award']){
       datalist = <li>{this.props.winner}</li>
-      console.log(this.props.nominees)
       nominees = this.props.nominees.map(function(nominee){
         return(
           <li>{nominee}</li>
@@ -169,7 +167,6 @@ var ImageList = React.createClass({
 
 var ImageContainer = React.createClass({
   load_data: function() {
-    console.log('loading data');
     $.ajax({
       url: this.props.url,
       dataType: 'json',
