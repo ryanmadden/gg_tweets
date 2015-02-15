@@ -1,5 +1,5 @@
 html, body {
-  font-family: Helvetica; }
+  font-family: "Helvetica Neue", "Arial", "sans-serif"; }
 
 html, body, div, span, h1, h2, h3, h4,
 h5, h6, p, a, img, i, ol, ul, li, form,
@@ -51,10 +51,12 @@ header {
 
 section#sidebar {
   float: left;
+  margin-right: 15px;
   padding: 10px;
   width: 250px;
   background-color: #fff;
   border-radius: 5px;
+  border: 1px solid #ebebeb;
   overflow-y: scroll; }
   section#sidebar h4 {
     font-size: 13px;
@@ -72,9 +74,70 @@ section#sidebar {
       background-color: #f5f5f5; }
 
 section#main {
-  float: right;
-  width: calc(100% - 300px); }
+  float: left;
+  margin-right: 15px;
+  width: calc(100% - 300px - 250px);
+  background-color: #fff;
+  border: 1px solid #ebebeb;
+  border-radius: 5px; }
   section#main h1 {
-    margin: 20px 0; }
+    padding: 15px;
+    font-weight: normal;
+    font-size: 20px;
+    color: #66757f;
+    background-color: #E5F2F7;
+    border-bottom: 1px solid #e1e8ed; }
+  section#main div#best-dressed-images {
+    padding: 15px;
+    border-bottom: 1px solid #e1e8ed; }
+    section#main div#best-dressed-images h2, section#main div#best-dressed-images h3 {
+      color: #444; }
+    section#main div#best-dressed-images h2 {
+      font-size: 20px; }
+    section#main div#best-dressed-images h3 {
+      font-size: 15px; }
+
+div#content div.data {
+  padding: 15px;
+  border-bottom: 1px solid #e1e8ed;
+  overflow: auto; }
+  div#content div.data h2.dataaward {
+    font-size: 16px;
+    color: #444; }
+  div#content div.data ul, div#content div.data ol {
+    float: left;
+    margin-right: 50px; }
+    div#content div.data ul h3.awardcategory, div#content div.data ol h3.awardcategory {
+      margin-top: 8px;
+      font-size: 14px;
+      color: #555; }
+    div#content div.data ul li, div#content div.data ol li {
+      font-size: 13px;
+      color: #555; }
+  div#content div.data ul {
+    width: 80px;
+    list-style: none; }
+  div#content div.data ol {
+    width: 150px; }
+    div#content div.data ol li {
+      margin-left: 17px; }
+div#content div.data:hover {
+  background-color: #F7FCFC; }
+
+section#creators {
+  float: left;
+  padding: 10px;
+  width: 200px;
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid #ebebeb; }
+  section#creators h2 {
+    font-size: 16px;
+    color: #555; }
+  section#creators ul {
+    padding-left: 15px;
+    list-style: none;
+    font-size: 12px;
+    color: #666; }
 
 /*# sourceMappingURL=style.css.map */
