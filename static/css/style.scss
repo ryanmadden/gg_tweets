@@ -1,0 +1,55 @@
+html, body {
+	font-family: Helvetica;
+}
+
+
+html, body, div, span, h1, h2, h3, h4,
+h5, h6, p, a, img, i, ol, ul, li, form,
+label, table, caption, {
+	margin: 0;
+	padding: 0;
+}
+
+
+
+section#sidebar {
+	position: fixed;
+	float: left;
+	padding: 10px;
+	width: 250px;
+	height: 100%;
+	background-color: #eee;
+	border-right: 1px solid #000;
+	overflow-y: scroll;
+
+	h2 {
+		margin: 10px 0;
+		font-size: 19px;
+		color: #444;
+	}
+	h4 {
+		font-size: 14px;
+		color: #666;
+	}
+	ul {
+		margin: 5px 0;
+		padding-left: 15px;
+		list-style: none;
+
+		li {
+			padding: 3px 0;
+			font-size: 13px;
+			color: #666;
+			border-bottom: 1px solid #ddd;
+			cursor: pointer;
+		}
+		li:hover {
+			background-color: #ddd;
+		}
+	}
+}
+
+section#main {
+	float: right;
+	width: calc(100% - 300px);
+}

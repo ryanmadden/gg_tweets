@@ -1,2 +1,4 @@
 *.json
 *.pyc
+./static/css/.sass-cache
+./static/css/style.css.map
