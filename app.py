@@ -1,7 +1,9 @@
 from flask import Flask, render_template, Response, request
 import json
 import run
+import best_dressed as bd
 import createAutograder
+import os.path
 
 app = Flask(__name__)
 
@@ -38,8 +40,9 @@ def get_host():
 	return ""
 
 # create award json in data.json 
-@app.route('/awards/<award>', methods=['Post'])
+@app.route('/awards/<award>', methods=['POST'])
 def get_awards(award):
+	print award
 	award = award.replace('_','/')
 	#award_json_formated =[]
 	with open('autograder.json', 'r') as file:
@@ -55,6 +58,25 @@ def get_awards(award):
 		file.write(json.dumps(award_json_formated, indent=4, separators=(',', ': ')))
 	return ""
 
+@app.route('/best-dressed.json', methods=['GET','POST'])
+def best_dressed():
+	flatfile = "best-dressed.json"
+
+	if request.method == "POST":
+		if os.path.isfile(flatfile) ==False:
+			theimages = bd.main()
+			with open(flatfile, 'w') as f:
+				f.write(json.dumps(theimages, indent=4, separators=(',', ': ')))
+
+	if os.path.isfile(flatfile) ==True:
+		with open(flatfile, 'r') as f:
+			images = json.loads(f.read())
+			return Response(json.dumps(images), mimetype='application/json')
+
+	return Response(json.dumps({}), mimetype='application/json')
+
+	
+
 def createJsonFormat(structured, key):
 	award_json = structured[key]
 	award_json_formated = {}
@@ -63,6 +85,8 @@ def createJsonFormat(structured, key):
 	award_json_formated["nominees"] = award_json["nominees"]
 	award_json_formated["presenters"] = award_json["presenters"]
 	return award_json_formated	
+
+
 
 if __name__ == "__main__":
 	app.run(debug=True)

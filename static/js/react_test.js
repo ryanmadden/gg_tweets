@@ -133,3 +133,73 @@ React.render(
   <DataBox url="thedata.json" pollInterval={2000} />,
   document.getElementById('content')
 );
+
+
+var AImage = React.createClass({
+  render: function() {
+    return (
+      <a href={this.props.href}>
+        <img src={this.props.src}/>
+      </a>
+    );
+  }
+});
+
+var ImageList = React.createClass({
+  render: function() {
+    var image_nodes = this.props.data.map(function(obj){
+      return (
+        <li>
+          <AImage src={obj.img} href={obj.link}>
+            {obj.img}
+          </AImage>
+        </li>
+      );
+    });
+
+    return (
+      <div className="images-list">
+        <ul className="ImageList small-block-grid-3">
+          {image_nodes}
+        </ul>
+      </div>
+    );
+  }
+});
+
+var ImageContainer = React.createClass({
+  load_data: function() {
+    console.log('loading data');
+    $.ajax({
+      url: this.props.url,
+      dataType: 'json',
+      success: function(data) {
+        this.setState({data: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
+  getInitialState: function() {
+    return {data: []};
+  },
+  componentDidMount: function() {
+    this.load_data();
+    setInterval(this.load_data, this.props.pollInterval);
+  },
+  render: function() {
+    return (
+      <div className="ImageContainer">
+        <h2>Click the images to view the best dressed people of the golden globes</h2>
+        <h3>images are displayed in order of popularity</h3>
+        <ImageList data={this.state.data} />
+      </div>
+    );
+  }
+});
+
+React.render(
+  <ImageContainer url="best-dressed.json" pollInterval={2000} />,
+  document.getElementById('best-dressed-images')
+);

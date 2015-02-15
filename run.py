@@ -9,9 +9,10 @@ from pprint import pprint
 
 class Award(object):
 
-	def __init__(self, t, f, n):
+	def __init__(self, t, f, s, n):
 		self.title      = t
 		self.filters    = f
+		self.stoplist   = s
 		self.nominees   = {nominee: 0 for nominee in n}
 		self.presenters = {}
 
@@ -20,6 +21,9 @@ class Award(object):
 
 	def get_filters(self):
 		return self.filters
+
+	def get_stoplist(self):
+		return self.stoplist
 
 	def get_nominees(self):
 		return self.nominees.keys()
@@ -32,6 +36,9 @@ class Award(object):
 
 	def set_filters(self, f):
 		self.filters = f
+
+	def set_stoplist(self, s):
+		self.stoplist = s
 
 	def set_nominees(self, n):
 		self.nominees = {nominee: 0 for nominee in n}
@@ -52,13 +59,19 @@ class Award(object):
 	def show(self):
 		winner     = dict(sorted(self.nominees.iteritems(), key=operator.itemgetter(1), reverse=True)[:1])
 		presenters = dict(sorted(self.presenters.iteritems(), key=operator.itemgetter(1), reverse=True)[:3])
-		print "-- Award: " + self.title
-		print "     Presented by: " + str(sorted(self.presenters.iteritems(), key=operator.itemgetter(1), reverse=True))
+		print "\n-- Award: " + self.title
+		# print "     Presented by: " + str(sorted(self.presenters.iteritems(), key=operator.itemgetter(1), reverse=True))
+		presenter_string = "     Presented by: "
+		# for presenter in presenters.keys():
+		# TODO Uncomment this for pretty printing
+		# 	presenter_string += presenter.title() + " & "
+		print presenters
+		print presenter_string
 		print "     Winner: " + winner.keys()[0].title()
 
 	def show_api(self):
 		winner =  dict(sorted(self.nominees.iteritems(), key=operator.itemgetter(1), reverse=True)[:1])
-		return {"award" : self.title, "winner" : winner.keys()[0].title(), "nominees" : self.nominees.keys()}
+		return {"award" : self.title, "winner" : winner.keys()[0].title(), "nominees" : self.nominees.keys(), "presenters" : self.presenters.keys()}
 
 
 
@@ -105,18 +118,6 @@ def nominees_api(nominees):
 	return nominee_compiled
 
 
-
-# def nominees_api_dict(award_titles, nominees):
-# 	nom_dict = {}
-# 	for a,n in zip(award_titles, nominees):
-# 		if a in nom_dict:
-# 			nom_dict[a].append(n)
-# 		else:
-# 			nom_dict[a] = [n]
-# 	return nom_dict
-
-
-
 @timeit
 def main():
 	f_2015_mini = './gg15mini.json'
@@ -126,20 +127,58 @@ def main():
 	# Tweet Parsing Filters
 	host_filters      = ["host", "hosting", "hosts", "hosted"]
 	presenter_filters = ["presented", "presenting", "presenter"]
-	award_filters     = [[["best"], ["picture"], ["drama"]],
-						 [["best"], ["picture"], ["musical", "comedy"]],
-						 [["best"], ["actor"], ["drama"]],
-						 [["best"], ["actress"], ["drama"]],
-						 [["best"], ["actor"], ["musical", "comedy"]],
-						 [["best"], ["actress"], ["musical", "comedy"]],
-						 [["best"], ["supporting"], ["actor"]],
-						 [["best"], ["supporting"], ["actress"]],
-						 [["best"], ["director"]],
-						 [["best"], ["screenplay"]],
-						 [["best"], ["score"]],
-						 [["best"], ["song"]],
-						 [["best"], ["animated"]],
-						 [["best"], ["foreign"]]]
+	award_filters     = [[["best"],             ["picture"],          ["drama"]],
+						 [["best"],             ["picture"],          ["musical", "comedy"]],
+						 [["best"],             ["actor"],            ["drama"]],
+						 [["best"],             ["actress"],          ["drama"]],
+						 [["best"],             ["actor"],            ["musical", "comedy"]],
+						 [["best"],             ["actress"],          ["musical", "comedy"]],
+						 [["best"],             ["supporting"],       ["actor"]],
+						 [["best"],             ["supporting"],       ["actress"]],
+						 [["best"],             ["director"]],
+						 [["best"],             ["screenplay"]],
+						 [["best"],             ["score"]],
+						 [["best"],             ["song"]],
+						 [["best"],             ["animated"]],
+						 [["best"],             ["foreign"]],
+						 [["best"],             ["television", "tv"], ["drama"]],
+						 [["best"],             ["actress"],          ["television", "tv"],   ["drama"]],
+						 [["best"],             ["actor"],            ["television", "tv"],   ["drama"]],
+						 [["best"],             ["television", "tv"], ["comedy", "musical"]],
+						 [["best"],             ["actress"],          ["television", "tv"],   ["comedy", "musical"]],
+						 [["best"],             ["actor"],            ["television", "tv"],   ["comedy", "musical"]],
+						 [["best"],             ["series"],           ["television", "tv"]],
+						 [["best"],             ["actress"],          ["series"],             ["television", "tv"]],
+						 [["best"],             ["actor"],            ["series"],             ["television", "tv"]],
+						 [["best"],             ["actress"],          ["supporting"],         ["series"],             ["television", "tv"]],
+						 [["best"],             ["actor"],            ["supporting"],         ["series"],             ["television", "tv"]],
+						 [["cecil", "demille"]]]
+	award_stoplists =   [["television", "tv"],
+						 ["television", "tv"],
+						 ["television", "tv"],
+						 ["television", "tv"],
+						 ["television", "tv"],
+						 ["television", "tv"],
+						 ["television", "tv"],
+						 ["television", "tv"],
+						 [],
+						 [],
+						 [],
+						 [],
+						 [],
+						 [],
+						 [],
+						 [],
+						 [],
+						 [],
+						 [],
+						 [],
+						 [],
+						 [],
+						 [],
+						 [],
+						 [],
+						 []]
 
 	# Hardcoded Info
 	nominees          = [["boyhood", "foxcatcher", "the imitation game", "selma", "the theory of everything"],
@@ -148,7 +187,7 @@ def main():
 						 ["julianne moore", "jennifer aniston", "felicity jones", "rosamund pike", "reese witherspoon"],
 						 ["michael keaton", "ralph fiennes", "bill murray", "joaquin phoenix", "christoph waltz"],
 						 ["amy adams", "emily blunt", "helen mirren", "julianne moore", "quvenzhane wallis"],
-						 ["j. k. simmons", "robert duvall", "edward norton", "mark ruffalo"],                                          #ethan hawke
+						 ["j. k. simmons", "robert duvall", "edward norton", "mark ruffalo"],
 						 ["patricia arquette", "jessica chastain", "keira knightley", "emma stone", "meryl streep"],
 						 ["richard linklater", "wes anderson", "ava duvernay", "david fincher", "alejandro inarritu gonzalez"],
 						 ["birdman", "the grand budapest hotel", "gone girl", "the imitation game", "boyhood"],
@@ -156,8 +195,8 @@ def main():
 						 ["noah", "annie", "the hunger games: mockingjay - part 1", "selma" "big eyes"],
 						 ["how to train your dragon 2", "big hero 6", "the book of life", "the boxtrolls", "the lego movie"],
 						 ["leviathan", "force majeure", "gett: the trial of viviane amsalem", "ida", "tangerines"],
-						 ["downton abbey (masterpiece)", "game of thrones", "the good wife", "house of cards", "the affair"]
-						 ["claire danes", "viola davis", "julianna margulies", "robin wright"],
+						 ["downton abbey (masterpiece)", "game of thrones", "the good wife", "house of cards", "the affair"],
+						 ["claire danes", "viola davis", "julianna margulies", "robin wright", "ruth wilson"],
 						 ["clive owen", "liev schreiber", "james spader", "dominic west", "kevin spacey"],
 						 ["girls", "jane the virgin", "orange is the new black", "silicon valley", "transparent"],
 						 ["lena dunham", "edie falco", "julia louis-dreyfus", "taylor schilling", "gina rodriguez"],
@@ -167,32 +206,32 @@ def main():
 						 ["martin freeman", "woody harrelson", "matthew mcconaughey", "mark ruffalo", "billy bob thornton"],
 						 ["uzo aduba", "kathy bates", "allison janney", "michelle monaghan", "joanne froggatt"],
 						 ["alan cumming", "colin hanks", "bill murray", "jon voight", "matt bomer"],
-						 ["george clooney"]
-	award_titles      = ["Best Motion Picture - Drama",
-						 "Best Motion Picture - Musical/Comedy",
-						 "Best Actor in a Motion Picture - Drama",
-						 "Best Actress in a Motion Picture - Drama",
-						 "Best Actor in a Motion Picture - Musical/Comedy",
-						 "Best Actress in a Motion Picture - Musical/Comedy",
-						 "Best Supporting Actor in a Motion Picture - Drama/Musical/Comedy",
-						 "Best Supporting Actress in a Motion Picture - Drama/Musical/Comedy",
-						 "Best Director",
-						 "Best Screenplay",
-						 "Best Original Score",
-						 "Best Original Song",
+						 ["george clooney"]]	
+	award_titles 	  = ["Best Motion Picture - Drama",
+				         "Best Motion Picture - Comedy Or Musical",
+						 "Best Performance by an Actor in a Motion Picture - Drama",
+						 "Best Performance by an Actress in a Motion Picture - Drama",
+						 "Best Performance by an Actor in a Motion Picture - Comedy Or Musical",
+						 "Best Performance by an Actress in a Motion Picture - Comedy Or Musical",
+						 "Best Performance by an Actor In A Supporting Role in a Motion Picture",
+						 "Best Performance by an Actress In A Supporting Role in a Motion Picture",
+						 "Best Director - Motion Picture",
+						 "Best Screenplay - Motion Picture",
+						 "Best Original Score - Motion Picture",
+						 "Best Original Song - Motion Picture",
 						 "Best Animated Feature Film",
 						 "Best Foreign Language Film",
-						# "Best Television Series - Drama",
-						# "Best Performance by an Actress in a Television Series - Drama",
-						#"Best Performance by an Actor in a Television Series - Drama",
-						#"Best Television Series - Comedy/Musical",
-						# "Best Performance by an Actress in a Television Series - Comedy/Musical",
-						 #"Best Performance by an Actor in a Television Series - Comedy/Musical",
-						 #"Best Mini-Series or Motion Picture Made for Television",
-						 #"Best Performance by an Actress in a Mini-Series or Motion Picture Made for Television",
-						 #"Best Performance by an Actor in a Mini-Series or Motion Picture Made for Television",
-						 #"Best Performance by an Actress in a Supporting Role in a Series, Mini-Series or Motion Picture Made for Television",
-						 #"Best Performance by an Actor in a Supporting Role in a Series, Mini-Series or Motion Picture Made for Television",
+						 "Best Television Series - Drama",
+						 "Best Performance by an Actress in a Television Series - Drama",
+						 "Best Performance by an Actor in a Television Series - Drama",
+						 "Best Television Series - Comedy Or Musical",
+						 "Best Performance by an Actress In A Television Series - Comedy Or Musical",
+						 "Best Performance by an Actor In A Television Series - Comedy Or Musical",
+						 "Best Mini-Series or Motion Picture Made for Television",
+						 "Best Performance by an Actress in a Mini-Series or Motion Picture Made for Television",
+						 "Best Performance by an Actor in a Mini-Series or Motion Picture Made for Television",
+						 "Best Performance by an Actress in a Supporting Role in a Series, Mini-Series or Motion Picture Made for Television",
+						 "Best Performance by an Actor in a Supporting Role in a Series, Mini-Series or Motion Picture Made for Television",
 						 "Cecil B. DeMille Award"]
 	presenter_list	  = ["vince vaughn",
 						 "kate beckinsale", 
@@ -235,18 +274,21 @@ def main():
 						 "julianna margulies"]
 
 	# Create Award object for each award
-	awards = [Award(award_titles[x], award_filters[x], nominees[x]) for x in range(14)]
-	print "Awards created..."
+	print "Creating awards..."
+	awards = [Award(award_titles[x], award_filters[x], award_stoplists[x], nominees[x]) for x in range(len(award_titles))]
 
 	# Read and parse through tweets
 	potential_hosts      = {}
 	count = 0
 	curr_percent = -5
  	with open(f_2015_mini, 'r') as f:
+
+
+ 		print "Creating tweet collection..."
  		tweets = map(json.loads, f)[0]
-		print "Tweet collection created..."
 		num_tweets = len(tweets)
 
+		print "Reading tweets..."
 		for tweet in tweets:
 			text  = tweet['text']
 			names = ""
@@ -266,9 +308,12 @@ def main():
 			# for each award
 			for award in awards:
 				contains_award = True
+				# TODO put stop word analysis first to short circuit analysis of bad tweets, improves speed
 				for req in award.get_filters():
 					if not any(opt in text.lower() for opt in req):
 						contains_award = False
+				if any(stop in text.lower() for stop in award.get_stoplist()):
+					contains_award = False
 				if contains_award:
 					for nom in award.get_nominees():
 						# for each nominee that shows up in the tweet, increment its likelihood
@@ -290,26 +335,49 @@ def main():
 					sys.stdout.flush()
 			count+=1
 
-	# Determine and display results in terminal
 
-	# ensure presenters only appear on their top award
-	for name in presenter_list:
+	# POST-FILTERING
+	# Nominees for an award cannot present the award
+	for presenter in presenter_list:
 		for award in awards:
-			if name in award.nominees:
-				award.presenters.pop(name)
-		# curr_max = 0
-		# max_award = awards[0]
-		# for award in awards:
-		# 	curr_presenters = award.presenters
-		# 	if name in curr_presenters.keys():
-		# 		if curr_presenters[name] > curr_max:
-		# 			max_award = award
-		# 			curr_max = curr_presenters[name]
-		# for award in awards:
-		# 	if award is not max_award:
-		# 		if name in award.presenters:
-		# 			award.presenters.pop(name)
+			if presenter in award.get_nominees():
+				award.presenters.pop(presenter)
 
+	# Grant presenters to highly-weighted awards
+	for presenter in presenter_list:
+		local_max = 0
+		local_max_award = None
+		for award in awards:
+			if presenter in award.get_presenters():
+				if award.presenters[presenter] > local_max:
+					local_max = award.presenters[presenter]
+					local_max_award = award
+		for award in awards:
+			if presenter in award.get_presenters():
+				if local_max - award.presenters[presenter] > 15:
+					award.presenters.pop(presenter)
+
+	#Eliminate presenters who have <50% of the votes of the max presenter
+	for award in awards:
+		local_presenters = award.presenters
+		max_votes = max(local_presenters.values())
+		for presenter in award.get_presenters():
+			if award.presenters[presenter] < (max_votes/2):
+				award.presenters.pop(presenter)
+
+	# If an award still has >2 presenters, eliminate presenters who are listed in an award with 2 or 1 presenters
+	# TODO fix this so it works a little better
+	# for award in awards:
+	# 	if len(award.get_presenters()) > 2:
+	# 			for presenter in award.get_presenters():
+	# 				for award_inner in awards:
+	# 					if presenter in award_inner.get_presenters() and award_inner.presenters[presenter] == max(award_inner.presenters.values()):
+	# 						award.presenters.pop(presenter)
+	# 						break
+
+
+
+	# Determine and display results in terminal
 	determine_results(awards, potential_hosts)
 	
 	# Determine and display results in frontend
