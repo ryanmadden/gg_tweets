@@ -35,16 +35,16 @@ var Data = React.createClass({
           <h2 className="dataaward">
             {this.props.award}
           </h2>
-          <ul>
-            <h3 className="awardcategory">Winner</h3>
+          <ul className="winner">
+            <h3 className="awardcategory"><i className="fa fa-trophy"></i>Winner</h3>
             {datalist}
           </ul>
-          <ol>
-            <h3 className="awardcategory">Nominees</h3>
+          <ol className="nominees">
+            <h3 className="awardcategory"><i className="fa fa-certificate"></i>Nominees</h3>
             {nominees}
           </ol>
-          <ul>
-            <h3 className="awardcategory">Presenters</h3>
+          <ul className="presenters">
+            <h3 className="awardcategory"><i className="fa fa-microphone"></i>Presenters</h3>
             {presenters}
           </ul>
         </div>

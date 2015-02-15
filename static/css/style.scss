@@ -29,13 +29,13 @@ header {
 
 	div#header-inner {
 		margin: 0 auto;
-		padding: 7px 0;
+		padding: 6px 0;
 		width: 80%;
 		overflow: auto;
 
 		h1 {
 			display: inline-block;
-			padding: 7px 0;
+			padding: 4px 0;
 			font-size: 17px;
 			color: #66757f;
 		}
@@ -101,7 +101,7 @@ section#sidebar {
 section#main {
 	float: left;
 	margin-right: 15px;
-	width: calc(100% - 300px - 250px);
+	width: calc(100% - 250px - 200px - 76px);
 	background-color: #fff;
 	border: 1px solid rgb(235, 235, 235);
 	border-radius: 5px;
@@ -140,7 +140,7 @@ div#content {
 
 		h2.dataaward {
 			font-size: 16px;
-			color: #444;
+			color: #555;
 		}
 		ul, ol {
 			float: left;
@@ -149,23 +149,31 @@ div#content {
 			h3.awardcategory {
 				margin-top: 8px;
 				font-size: 14px;
-				color: #555;
+				color: #666;
+
+				i {
+					margin-right: 5px;
+					font-size: 13px;
+				}
 			}
 			li {
-				font-size: 13px;
+				font-size: 12px;
 				color: #555;
 			}
 		}
-		ul {
+		ul.winner {
 			width: 80px;
 			list-style: none;
 		}
-		ol {
-			width: 150px;
+		ol.nominees {
+			width: 130px;
 
 			li {
 				margin-left: 17px;
 			}
+		}
+		ul.presenters {
+			width: 100px;
 		}
 	}
 	div.data:hover {
