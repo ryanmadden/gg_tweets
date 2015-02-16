@@ -1,4 +1,5 @@
 import run
+import sys
 from pprint import pprint
 
 def create_meta_each(method, method_description):
@@ -10,14 +11,14 @@ def create_meta_each(method, method_description):
 def create_meta_data(year):
 	metadata = {}
 	metadata["year"] = year
-	metadata["hosts"] = create_meta_each("test", "test1")
-	metadata["nominees"] = create_meta_each("test", "test1")
-	metadata["awards"] = create_meta_each("test", "test1")
-	metadata["presenters"] = create_meta_each("test", "test1")
+	metadata["hosts"] = create_meta_each("detected", "test1")
+	metadata["nominees"] = create_meta_each("hardcoded", "test1")
+	metadata["awards"] = create_meta_each("detected", "test1")
+	metadata["presenters"] = create_meta_each("detected", "test1")
 	return metadata
 
 # TODO: add presenters and nominees
-def create_unstructured(hosts, awards, nominees):
+def create_unstructured(hosts, awards, nominees, presenters):
 	unstructured = {}
 	winners_unstructured = []
 	awards_unstructured = [] 
@@ -27,12 +28,9 @@ def create_unstructured(hosts, awards, nominees):
 		winners_unstructured.append(each["winner"])
 		awards_unstructured.append(each["award"])
 	unstructured["winners"] = winners_unstructured
-	print winners_unstructured
 	unstructured["awards"] = awards_unstructured
-	
-	print awards_unstructured
-
 	unstructured["nominees"] = nominees
+	unstructured["presenters"] = presenters
 	return unstructured
 
 # TODO: add presenters and nominees
@@ -50,21 +48,24 @@ def create_structured(awards):
 	return structured
 
 
-def create_data():
-	hosts, awards, nominees = run.main()
+def create_data(year):
+	hosts, awards, nominees, presenters = run.main(year)
 	print hosts
 	print awards
 	data = {}
-	data["unstructured"] = create_unstructured(hosts, awards, nominees)
+	data["unstructured"] = create_unstructured(hosts, awards, nominees, presenters)
 	data["structured"] = create_structured(awards)
 	return data
 
 def main(year):
+	if len(sys.argv) > 1:
+		year = sys.argv[1]
+		print year	
 	autograder = {}
 	autograder["metadata"] = create_meta_data(year)
-	autograder["data"] = create_data()
+	autograder["data"] = create_data(year)
 	pprint(autograder)
 	return autograder
 
 if __name__ == "__main__":
-	main()
+	main(sys.argv[1:])
