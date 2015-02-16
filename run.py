@@ -5,7 +5,7 @@ import sys
 from nltk import word_tokenize
 from timer import timeit
 from pprint import pprint
-
+import data_2013 
 
 class Award(object):
 
@@ -117,13 +117,19 @@ def nominees_api(nominees):
 		nominee_compiled.extend(mov)
 	return nominee_compiled
 
+def presenters_api(presenters):
+	presenter_compiled = []
+	for presenter in presenters:
+		presenter_compiled.extend(presenter)
+	return presenter_compiled
 
 @timeit
-def main():
+def main(year):
 	f_2015_mini = './gg15mini.json'
 	f_2015      = './goldenglobes2015.json'
 	f_2013      = './gg2013.json'
 
+	filename = f_2015_mini
 	# Tweet Parsing Filters
 	host_filters      = ["host", "hosting", "hosts", "hosted"]
 	presenter_filters = ["presented", "presenting", "presenter"]
@@ -273,6 +279,12 @@ def main():
 						 "seth meyers", 
 						 "julianna margulies"]
 
+	# 2013 data 
+	if year == '2013':
+		print "2013 Selected"
+		nominees, presenter_list = data_2013.returnData()
+		filename = f_2013
+
 	# Create Award object for each award
 	print "Creating awards..."
 	awards = [Award(award_titles[x], award_filters[x], award_stoplists[x], nominees[x]) for x in range(len(award_titles))]
@@ -281,7 +293,7 @@ def main():
 	potential_hosts      = {}
 	count = 0
 	curr_percent = -5
- 	with open(f_2015_mini, 'r') as f:
+ 	with open(filename, 'r') as f:
 
 
  		print "Creating tweet collection..."
@@ -360,7 +372,9 @@ def main():
 	#Eliminate presenters who have <50% of the votes of the max presenter
 	for award in awards:
 		local_presenters = award.presenters
-		max_votes = max(local_presenters.values())
+		if local_presenters.values():
+			max_votes = max(local_presenters.values())
+			print max_votes
 		for presenter in award.get_presenters():
 			if award.presenters[presenter] < (max_votes/2):
 				award.presenters.pop(presenter)
@@ -384,7 +398,8 @@ def main():
 	final_awards = awards_api(awards)
 	final_hosts  = hosts_api(potential_hosts)
 	final_nominees = nominees_api(nominees)
-	return (final_hosts, final_awards, final_nominees)
+	final_presenters = presenter_list
+	return (final_hosts, final_awards, final_nominees, final_presenters)
 
 
 
