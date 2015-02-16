@@ -104,30 +104,34 @@ section#sidebar {
 section#main {
 	float: left;
 	width: calc(100% - 250px - 39px);
-	background-color: #fff;
-	border: 1px solid rgb(235, 235, 235);
-	border-radius: 5px;
 
-	h1 {
-		padding: 15px;
-		font-weight: normal;
-		font-size: 20px;
-		color: #66757f;
-		background-color: #E5F2F7;
-		border-bottom: 1px solid #e1e8ed;
-	}
-	div#best-dressed-images {
-		padding: 15px;
-		border-bottom: 1px solid #e1e8ed;
+	div.best-dressed {
+		margin-bottom: 15px;
+		border: 1px solid rgb(235, 235, 235);
+		border-radius: 5px;
 
-		h2, h3 {
-			color: #444;
-		}
-		h2 {
+		h1 {
+			padding: 15px;
+			font-weight: normal;
 			font-size: 20px;
+			color: #66757f;
+			background-color: #fff;
+			border-bottom: 1px solid #e1e8ed;
 		}
-		h3 {
-			font-size: 15px;
+		div#best-dressed-images {
+			padding: 15px;
+			background-color: #f9f9f9;
+			border-radius: 0 0 5px 5px;
+
+			h2, h3 {
+				color: #444;
+			}
+			h2 {
+				font-size: 18px;
+			}
+			h3 {
+				font-size: 13px;
+			}
 		}
 	}
 }
@@ -140,9 +144,12 @@ section#main {
 
 
 div#content {
+	border: 1px solid rgb(235, 235, 235);
+	border-radius: 5px;
 
 	div.data {
 		padding: 15px;
+		background-color: #fff;
 		border-bottom: 1px solid #e1e8ed;
 		overflow: auto;
 
@@ -153,11 +160,14 @@ div#content {
 		ul, ol {
 			float: left;
 			margin-right: 50px;
+			width: calc((100% / 3) - 50px);
 
 			h3.awardcategory {
 				margin-top: 8px;
+				margin-bottom: 3px;
+				font-weight: normal;
 				font-size: 14px;
-				color: #666;
+				color: #555;
 
 				i {
 					margin-right: 5px;
@@ -170,22 +180,29 @@ div#content {
 			}
 		}
 		ul.winner {
-			width: 80px;
+			// width: 80px;
 			list-style: none;
+
+			i {
+				color: #FFAC33;
+			}
 		}
 		ol.nominees {
-			width: 130px;
+			// width: 130px;
 
 			li {
 				margin-left: 17px;
 			}
 		}
 		ul.presenters {
-			width: 100px;
+			// width: 100px;
 		}
 	}
 	div.data:hover {
 		background-color: #F7FCFC;
+	}
+	div.data:first-child {
+		border-radius: 4px 4px 0 0;
 	}
 }
 

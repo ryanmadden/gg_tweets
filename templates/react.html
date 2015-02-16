@@ -6,6 +6,9 @@
 		<h1>Golden Globe Tweet Processing</h1>
 		<button id="2015">Process 2015 data</button>
 		<button id="2013">Process 2013 data</button>
+		<div class="load_wrapper">
+			<div class="loader"></div>
+		</div>
 	</div>
 </header>
 
@@ -51,12 +54,11 @@
 
 
 	<section id="main">
-		<h1>Results</h1>
-		<div class="load_wrapper">
-			<div class="loader"></div>
+		<div class="best-dressed">
+			<h1>Here are some of the best dressed celebrities at the Golden Globes.</h1>
+			<div id="best-dressed-images"></div>
 		</div>
 
-		<div id="best-dressed-images"></div>
 		<div id="content"></div>
 
 		<script type="text/jsx;harmony=true" src="static/js/react_test.js"></script>

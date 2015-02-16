@@ -77,62 +77,70 @@ section#sidebar {
 
 section#main {
   float: left;
-  width: calc(100% - 250px - 39px);
-  background-color: #fff;
-  border: 1px solid #ebebeb;
-  border-radius: 5px; }
-  section#main h1 {
-    padding: 15px;
-    font-weight: normal;
-    font-size: 20px;
-    color: #66757f;
-    background-color: #E5F2F7;
-    border-bottom: 1px solid #e1e8ed; }
-  section#main div#best-dressed-images {
-    padding: 15px;
-    border-bottom: 1px solid #e1e8ed; }
-    section#main div#best-dressed-images h2, section#main div#best-dressed-images h3 {
-      color: #444; }
-    section#main div#best-dressed-images h2 {
-      font-size: 20px; }
-    section#main div#best-dressed-images h3 {
-      font-size: 15px; }
+  width: calc(100% - 250px - 39px); }
+  section#main div.best-dressed {
+    margin-bottom: 15px;
+    border: 1px solid #ebebeb;
+    border-radius: 5px; }
+    section#main div.best-dressed h1 {
+      padding: 15px;
+      font-weight: normal;
+      font-size: 20px;
+      color: #66757f;
+      background-color: #fff;
+      border-bottom: 1px solid #e1e8ed; }
+    section#main div.best-dressed div#best-dressed-images {
+      padding: 15px;
+      background-color: #f9f9f9;
+      border-radius: 0 0 5px 5px; }
+      section#main div.best-dressed div#best-dressed-images h2, section#main div.best-dressed div#best-dressed-images h3 {
+        color: #444; }
+      section#main div.best-dressed div#best-dressed-images h2 {
+        font-size: 18px; }
+      section#main div.best-dressed div#best-dressed-images h3 {
+        font-size: 13px; }
 
 @media (min-width: 1300px) {
   section#main {
     margin-right: 15px;
     width: calc(100% - 250px - 200px - 76px); } }
-div#content div.data {
-  padding: 15px;
-  border-bottom: 1px solid #e1e8ed;
-  overflow: auto; }
-  div#content div.data h2.dataaward {
-    font-size: 16px;
-    color: #555; }
-  div#content div.data ul, div#content div.data ol {
-    float: left;
-    margin-right: 50px; }
-    div#content div.data ul h3.awardcategory, div#content div.data ol h3.awardcategory {
-      margin-top: 8px;
-      font-size: 14px;
-      color: #666; }
-      div#content div.data ul h3.awardcategory i, div#content div.data ol h3.awardcategory i {
-        margin-right: 5px;
-        font-size: 13px; }
-    div#content div.data ul li, div#content div.data ol li {
-      font-size: 12px;
+div#content {
+  border: 1px solid #ebebeb;
+  border-radius: 5px; }
+  div#content div.data {
+    padding: 15px;
+    background-color: #fff;
+    border-bottom: 1px solid #e1e8ed;
+    overflow: auto; }
+    div#content div.data h2.dataaward {
+      font-size: 16px;
       color: #555; }
-  div#content div.data ul.winner {
-    width: 80px;
-    list-style: none; }
-  div#content div.data ol.nominees {
-    width: 130px; }
+    div#content div.data ul, div#content div.data ol {
+      float: left;
+      margin-right: 50px;
+      width: calc((100% / 3) - 50px); }
+      div#content div.data ul h3.awardcategory, div#content div.data ol h3.awardcategory {
+        margin-top: 8px;
+        margin-bottom: 3px;
+        font-weight: normal;
+        font-size: 14px;
+        color: #555; }
+        div#content div.data ul h3.awardcategory i, div#content div.data ol h3.awardcategory i {
+          margin-right: 5px;
+          font-size: 13px; }
+      div#content div.data ul li, div#content div.data ol li {
+        font-size: 12px;
+        color: #555; }
+    div#content div.data ul.winner {
+      list-style: none; }
+      div#content div.data ul.winner i {
+        color: #FFAC33; }
     div#content div.data ol.nominees li {
       margin-left: 17px; }
-  div#content div.data ul.presenters {
-    width: 100px; }
-div#content div.data:hover {
-  background-color: #F7FCFC; }
+  div#content div.data:hover {
+    background-color: #F7FCFC; }
+  div#content div.data:first-child {
+    border-radius: 4px 4px 0 0; }
 
 section#creators {
   display: none;
