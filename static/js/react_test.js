@@ -120,7 +120,7 @@ var DataBox = React.createClass({
 });
 
 React.render(
-  <DataBox url="thedata.json" pollInterval={2000} />,
+  <DataBox url="thedata.json" pollInterval={1000} />,
   document.getElementById('content')
 );
 
@@ -189,6 +189,6 @@ var ImageContainer = React.createClass({
 });
 
 React.render(
-  <ImageContainer url="best-dressed.json" pollInterval={2000} />,
+  <ImageContainer url="best-dressed.json" pollInterval={1000} />,
   document.getElementById('best-dressed-images')
 );

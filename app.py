@@ -42,7 +42,6 @@ def get_host():
 # create award json in data.json 
 @app.route('/awards/<award>', methods=['POST'])
 def get_awards(award):
-	print award
 	award = award.replace('_','/')
 	#award_json_formated =[]
 	with open('autograder.json', 'r') as file:
@@ -85,7 +84,6 @@ def createJsonFormat(structured, key):
 	award_json_formated["nominees"] = award_json["nominees"]
 	award_json_formated["presenters"] = award_json["presenters"]
 	return award_json_formated	
-
 
 
 if __name__ == "__main__":
