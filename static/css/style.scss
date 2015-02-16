@@ -10,12 +10,13 @@ label, table, caption, {
 	padding: 0;
 }
 
+
 body {
 	background: url('../img/twitter-bg.png') no-repeat;
 	background-color: #C0DEED;
 
 	main {
-		margin: 15px auto 0 auto;
+		margin: 50px auto 0 auto;
 		width: 80%;
 		overflow: auto;
 	}
@@ -23,6 +24,8 @@ body {
 
 
 header {
+	position: fixed;
+	top: 0;
 	width: 100%;
 	background-color: #fff;
 	box-shadow: 0 1px 0px #aaa;
@@ -100,8 +103,7 @@ section#sidebar {
 
 section#main {
 	float: left;
-	margin-right: 15px;
-	width: calc(100% - 250px - 200px - 76px);
+	width: calc(100% - 250px - 39px);
 	background-color: #fff;
 	border: 1px solid rgb(235, 235, 235);
 	border-radius: 5px;
@@ -127,6 +129,12 @@ section#main {
 		h3 {
 			font-size: 15px;
 		}
+	}
+}
+@media(min-width: 1300px) {
+	section#main {
+		margin-right: 15px;
+		width: calc(100% - 250px - 200px - 76px);
 	}
 }
 
@@ -183,6 +191,7 @@ div#content {
 
 
 section#creators {
+	display: none;
 	float: left;
 	padding: 10px;
 	width: 200px;
@@ -199,6 +208,11 @@ section#creators {
 		list-style: none;
 		font-size: 12px;
 		color: #666;
+	}
+}
+@media(min-width: 1300px) {
+	section#creators {
+		display: block;
 	}
 }
 

@@ -11,11 +11,13 @@ body {
   background: url("../img/twitter-bg.png") no-repeat;
   background-color: #C0DEED; }
   body main {
-    margin: 15px auto 0 auto;
+    margin: 50px auto 0 auto;
     width: 80%;
     overflow: auto; }
 
 header {
+  position: fixed;
+  top: 0;
   width: 100%;
   background-color: #fff;
   box-shadow: 0 1px 0px #aaa; }
@@ -75,8 +77,7 @@ section#sidebar {
 
 section#main {
   float: left;
-  margin-right: 15px;
-  width: calc(100% - 250px - 200px - 76px);
+  width: calc(100% - 250px - 39px);
   background-color: #fff;
   border: 1px solid #ebebeb;
   border-radius: 5px; }
@@ -97,6 +98,10 @@ section#main {
     section#main div#best-dressed-images h3 {
       font-size: 15px; }
 
+@media (min-width: 1300px) {
+  section#main {
+    margin-right: 15px;
+    width: calc(100% - 250px - 200px - 76px); } }
 div#content div.data {
   padding: 15px;
   border-bottom: 1px solid #e1e8ed;
@@ -130,6 +135,7 @@ div#content div.data:hover {
   background-color: #F7FCFC; }
 
 section#creators {
+  display: none;
   float: left;
   padding: 10px;
   width: 200px;
@@ -144,5 +150,9 @@ section#creators {
     list-style: none;
     font-size: 12px;
     color: #666; }
+
+@media (min-width: 1300px) {
+  section#creators {
+    display: block; } }
 
 /*# sourceMappingURL=style.css.map */
