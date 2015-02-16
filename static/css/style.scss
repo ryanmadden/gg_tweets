@@ -155,6 +155,19 @@ div#content {
 		border-bottom: 1px solid #e1e8ed;
 		overflow: auto;
 
+		div.data-left {
+			float: left;
+			width: 50px;
+
+			img.prof-pic {
+				width: 50px;
+				border-radius: 3px;
+			}
+		}
+		div.data-right {
+			float: right;
+			width: calc(100% - 70px);
+		}
 		h2.award-name {
 			display: inline-block;
 			width: 65%;

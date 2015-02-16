@@ -114,6 +114,15 @@ div#content {
     background-color: #fff;
     border-bottom: 1px solid #e1e8ed;
     overflow: auto; }
+    div#content div.data div.data-left {
+      float: left;
+      width: 50px; }
+      div#content div.data div.data-left img.prof-pic {
+        width: 50px;
+        border-radius: 3px; }
+    div#content div.data div.data-right {
+      float: right;
+      width: calc(100% - 70px); }
     div#content div.data h2.award-name {
       display: inline-block;
       width: 65%;

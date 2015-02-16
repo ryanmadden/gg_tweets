@@ -32,13 +32,18 @@ var Data = React.createClass({
 
       return (
         <div className="data">
-          <h2 className="award-name">{this.props.award}</h2>
-          <h3 className="winner"><i className="fa fa-trophy"></i>{datalist}</h3>
-          <h4 className="presenters"><i className="fa fa-microphone"></i>Presented by {presenters}</h4>
-          <ul className="nominees">
-            <h3 className="awardcategory"><i className="fa fa-certificate"></i>The Other Nominees</h3>
-            {nominees}
-          </ul>
+          <div className="data-left">
+            <img className="prof-pic" src="../static/img/gg-prof-pic.png"></img>
+          </div>
+          <div className="data-right">
+            <h2 className="award-name">{this.props.award}</h2>
+            <h3 className="winner"><i className="fa fa-trophy"></i>{datalist}</h3>
+            <h4 className="presenters"><i className="fa fa-microphone"></i>Presented by {presenters}</h4>
+            <ul className="nominees">
+              <h3 className="awardcategory"><i className="fa fa-certificate"></i>The Other Nominees</h3>
+              {nominees}
+            </ul>
+          </div>
         </div>
       );
     }
