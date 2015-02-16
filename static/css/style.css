@@ -20,7 +20,8 @@ header {
   top: 0;
   width: 100%;
   background-color: #fff;
-  box-shadow: 0 1px 0px #aaa; }
+  box-shadow: 0 1px 0px #aaa;
+  z-index: 100; }
   header div#header-inner {
     margin: 0 auto;
     padding: 6px 0;
@@ -105,6 +106,7 @@ section#main {
     margin-right: 15px;
     width: calc(100% - 250px - 200px - 76px); } }
 div#content {
+  margin-bottom: 20px;
   border: 1px solid #ebebeb;
   border-radius: 5px; }
   div#content div.data {
@@ -112,35 +114,54 @@ div#content {
     background-color: #fff;
     border-bottom: 1px solid #e1e8ed;
     overflow: auto; }
-    div#content div.data h2.dataaward {
-      font-size: 16px;
+    div#content div.data h2.award-name {
+      display: inline-block;
+      width: 65%;
+      font-size: 14px;
       color: #555; }
-    div#content div.data ul, div#content div.data ol {
-      float: left;
-      margin-right: 50px;
-      width: calc((100% / 3) - 50px); }
-      div#content div.data ul h3.awardcategory, div#content div.data ol h3.awardcategory {
-        margin-top: 8px;
-        margin-bottom: 3px;
+    div#content div.data h3.winner {
+      float: right;
+      width: 30%;
+      text-align: right;
+      font-size: 14px;
+      color: #555; }
+      div#content div.data h3.winner i {
+        display: inline-block;
+        margin-right: 5px;
+        color: #FFAC33; }
+    div#content div.data h4.presenters {
+      margin-top: 5px;
+      font-weight: normal;
+      font-size: 13px;
+      color: #666; }
+      div#content div.data h4.presenters i {
+        margin-right: 6px;
+        font-size: 12px; }
+    div#content div.data ul.nominees {
+      margin-top: 15px;
+      list-style: none; }
+      div#content div.data ul.nominees h3.awardcategory {
         font-weight: normal;
-        font-size: 14px;
-        color: #555; }
-        div#content div.data ul h3.awardcategory i, div#content div.data ol h3.awardcategory i {
+        font-size: 13px;
+        color: #666; }
+        div#content div.data ul.nominees h3.awardcategory i {
           margin-right: 5px;
           font-size: 13px; }
-      div#content div.data ul li, div#content div.data ol li {
+      div#content div.data ul.nominees li {
+        display: inline-block;
+        margin-right: 5px;
         font-size: 12px;
-        color: #555; }
-    div#content div.data ul.winner {
-      list-style: none; }
-      div#content div.data ul.winner i {
-        color: #FFAC33; }
-    div#content div.data ol.nominees li {
-      margin-left: 17px; }
+        color: #347291; }
+      div#content div.data ul.nominees li:after {
+        content: ","; }
+      div#content div.data ul.nominees li:last-child:after {
+        content: ""; }
   div#content div.data:hover {
     background-color: #F7FCFC; }
   div#content div.data:first-child {
     border-radius: 4px 4px 0 0; }
+  div#content div.data:last-child {
+    border-bottom: none; }
 
 section#creators {
   display: none;

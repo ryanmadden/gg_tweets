@@ -29,6 +29,7 @@ header {
 	width: 100%;
 	background-color: #fff;
 	box-shadow: 0 1px 0px #aaa;
+	z-index: 100;
 
 	div#header-inner {
 		margin: 0 auto;
@@ -144,6 +145,7 @@ section#main {
 
 
 div#content {
+	margin-bottom: 20px;
 	border: 1px solid rgb(235, 235, 235);
 	border-radius: 5px;
 
@@ -153,21 +155,44 @@ div#content {
 		border-bottom: 1px solid #e1e8ed;
 		overflow: auto;
 
-		h2.dataaward {
-			font-size: 16px;
+		h2.award-name {
+			display: inline-block;
+			width: 65%;
+			font-size: 14px;
 			color: #555;
 		}
-		ul, ol {
-			float: left;
-			margin-right: 50px;
-			width: calc((100% / 3) - 50px);
+		h3.winner {
+			float: right;
+			width: 30%;
+			text-align: right;
+			font-size: 14px;
+			color: #555;
+
+			i {
+				display: inline-block;
+				margin-right: 5px;
+				color: #FFAC33;
+			}
+		}
+		h4.presenters {
+			margin-top: 5px;
+			font-weight: normal;
+			font-size: 13px;
+			color: #666;
+
+			i {
+				margin-right: 6px;
+				font-size: 12px;
+			}
+		}
+		ul.nominees {
+			margin-top: 15px;
+			list-style: none;
 
 			h3.awardcategory {
-				margin-top: 8px;
-				margin-bottom: 3px;
 				font-weight: normal;
-				font-size: 14px;
-				color: #555;
+				font-size: 13px;
+				color: #666;
 
 				i {
 					margin-right: 5px;
@@ -175,27 +200,17 @@ div#content {
 				}
 			}
 			li {
+				display: inline-block;
+				margin-right: 5px;
 				font-size: 12px;
-				color: #555;
+				color: #347291;
 			}
-		}
-		ul.winner {
-			// width: 80px;
-			list-style: none;
-
-			i {
-				color: #FFAC33;
+			li:after {
+				content: ",";
 			}
-		}
-		ol.nominees {
-			// width: 130px;
-
-			li {
-				margin-left: 17px;
+			li:last-child:after {
+				content: "";
 			}
-		}
-		ul.presenters {
-			// width: 100px;
 		}
 	}
 	div.data:hover {
@@ -203,6 +218,9 @@ div#content {
 	}
 	div.data:first-child {
 		border-radius: 4px 4px 0 0;
+	}
+	div.data:last-child {
+		border-bottom: none;
 	}
 }
 
