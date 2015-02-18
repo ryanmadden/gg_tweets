@@ -198,7 +198,7 @@ def main(year):
 						 ["richard linklater", "wes anderson", "ava duvernay", "david fincher", "alejandro inarritu gonzalez"],
 						 ["birdman", "the grand budapest hotel", "gone girl", "the imitation game", "boyhood"],
 						 ["the imitation game", "birdman", "gone girl", "interstellar", "the theory of everything"],
-						 ["noah", "annie", "the hunger games: mockingjay - part 1", "selma" "big eyes"],
+						 ["noah", "annie", "the hunger games: mockingjay - part 1", "selma", "big eyes"],
 						 ["how to train your dragon 2", "big hero 6", "the book of life", "the boxtrolls", "the lego movie"],
 						 ["leviathan", "force majeure", "gett: the trial of viviane amsalem", "ida", "tangerines"],
 						 ["downton abbey (masterpiece)", "game of thrones", "the good wife", "house of cards", "the affair"],

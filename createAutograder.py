@@ -46,8 +46,7 @@ def create_meta_data(year):
 	mappings = {}
 
 	nominees_mapping_d = """
-						The hardcoded nominees are mapped to the correct award by searching through the tweet finding award names and for each nominee 
-						appearing in that tweet, increase the likelihood the nominee is part of the award. 
+						We mapped the nominees to the award by hardcoding it. 
 						"""
 	presenters_mapping_d  = """
 							Presenters mapping are done by parsing each tweet using regex to find presenter names and assigned 
@@ -56,7 +55,7 @@ def create_meta_data(year):
 							many awards, remove them from awards where they have very few votes compared to their max votes. 
 							3. For each ward, remove presenters who have < 50 percent of the votes of the max			
 							"""
-	mappings["nominees"] = create_meta_each("detected", nominees_mapping_d)
+	mappings["nominees"] = create_meta_each("hardcoded", nominees_mapping_d)
 	mappings["presenters"] = create_meta_each("detected", presenters_mapping_d)
 	metadata["mappings"] = mappings
 	# metadata["best dressed"] = create_meta_each("detected", best_dress_d)
@@ -115,7 +114,7 @@ def main(year):
 		if sys.argv[1] == "2013":
 			with open('autograder2013.json', 'w+') as file:
 				json.dump(autograder, file)
-		elif year == 2015:
+		elif year == "2015":
 			with open('autograder2015.json', 'w+') as file:
 				json.dump(autograder, file)
 	return autograder
